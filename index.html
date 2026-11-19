@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>常用中藥目錄測驗系統 · 專屬題庫入口</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #f6f5f1;
+            --surface: #ffffff;
+            --surface-hover: #faf9f6;
+            --border: #e5e3dc;
+            --border-strong: #d4d1c7;
+            --ink: #171716;
+            --ink-secondary: #686660;
+            --ink-muted: #94918a;
+            --accent: #185c4b;
+            --accent-subtle: rgba(24, 92, 75, 0.08);
+            --warn-bg: #fefce8;
+            --warn-border: #fde047;
+            --warn-ink: #854d0e;
+        }
+
+        body.dark-mode {
+            --bg: #111315;
+            --surface: #181a1d;
+            --surface-hover: #1f2226;
+            --border: #272a2f;
+            --border-strong: #363a41;
+            --ink: #eceae4;
+            --ink-secondary: #9498a0;
+            --ink-muted: #646870;
+            --accent: #56b89d;
+            --accent-subtle: rgba(86, 184, 157, 0.12);
+            --warn-bg: rgba(250, 204, 21, 0.1);
+            --warn-border: rgba(250, 204, 21, 0.3);
+            --warn-ink: #fde047;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Noto Sans TC', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--bg);
+            color: var(--ink);
+            line-height: 1.5;
+            -webkit-font-smoothing: antialiased;
+            transition: background-color 0.2s ease, color 0.2s ease;
+        }
+
+        .container {
+            max-width: 680px;
+            margin: 0 auto;
+            padding: 44px 20px 64px;
+        }
+
+        .topbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 32px;
+        }
+
+        .eyebrow {
+            font-size: 0.8125rem;
+            font-weight: 500;
+            color: var(--ink-secondary);
+        }
+
+        .theme-btn {
+            appearance: none;
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--ink-secondary);
+            font-family: inherit;
+            font-size: 0.8125rem;
+            font-weight: 500;
+            padding: 6px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.15s ease;
+        }
+
+        .theme-btn:hover {
+            border-color: var(--border-strong);
+            color: var(--ink);
+            background-color: var(--surface);
+        }
+
+        .theme-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: var(--ink-secondary);
+        }
+
+        body.dark-mode .theme-dot {
+            background-color: var(--accent);
+        }
+
+        header { margin-bottom: 36px; }
+
+        h1 {
+            font-size: clamp(1.55rem, 3.5vw, 1.95rem);
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            color: var(--ink);
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            font-size: 0.9375rem;
+            color: var(--ink-secondary);
+        }
+
+        .section { margin-bottom: 32px; }
+
+        .section-header {
+            display: flex;
+            align-items: baseline;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            padding: 0 2px;
+        }
+
+        .section-title {
+            font-size: 0.8125rem;
+            font-weight: 600;
+            color: var(--ink-secondary);
+            letter-spacing: 0.04em;
+        }
+
+        .section-meta {
+            font-size: 0.75rem;
+            color: var(--ink-muted);
+            font-variant-numeric: tabular-nums;
+        }
+
+        .exam-list {
+            background-color: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .exam-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            padding: 18px 20px;
+            text-decoration: none;
+            color: inherit;
+            border-bottom: 1px solid var(--border);
+            transition: background-color 0.15s ease;
+        }
+
+        .exam-item:last-child { border-bottom: none; }
+        .exam-item:hover { background-color: var(--surface-hover); }
+
+        .exam-main { min-width: 0; flex: 1; }
+
+        .exam-title-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 4px;
+            flex-wrap: wrap;
+        }
+
+        .exam-title {
+            font-size: 1.05rem;
+            font-weight: 600;
+            color: var(--ink);
+            transition: color 0.15s ease;
+        }
+
+        .exam-item:hover .exam-title { color: var(--accent); }
+
+        .exam-tag {
+            font-size: 0.72rem;
+            font-weight: 600;
+            color: var(--accent);
+            background-color: var(--accent-subtle);
+            padding: 1px 7px;
+            border-radius: 4px;
+            white-space: nowrap;
+        }
+
+        .exam-desc {
+            font-size: 0.84rem;
+            color: var(--ink-secondary);
+        }
+
+        .exam-aside {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-shrink: 0;
+        }
+
+        .exam-count {
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: var(--ink-secondary);
+            font-variant-numeric: tabular-nums;
+        }
+
+        .exam-arrow {
+            font-size: 0.9375rem;
+            color: var(--ink-muted);
+            transition: transform 0.15s ease, color 0.15s ease;
+        }
+
+        .exam-item:hover .exam-arrow {
+            transform: translateX(3px);
+            color: var(--accent);
+        }
+
+        .config-note {
+            margin-top: 10px;
+            padding: 10px 14px;
+            border-radius: 8px;
+            background: var(--warn-bg);
+            border: 1px solid var(--warn-border);
+            color: var(--warn-ink);
+            font-size: 0.8rem;
+            display: none;
+        }
+
+        .config-note code {
+            font-family: ui-monospace, monospace;
+            font-weight: 600;
+        }
+
+        footer {
+            margin-top: 44px;
+            padding-top: 18px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 0.75rem;
+            color: var(--ink-muted);
+        }
+
+        @media (max-width: 560px) {
+            .container { padding: 28px 16px 48px; }
+            .exam-item { padding: 15px 16px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="topbar">
+            <span class="eyebrow">常用中藥目錄 · 獨立測驗站點</span>
+            <button id="themePortalBtn" class="theme-btn" onclick="togglePortalTheme()" type="button">
+                <span class="theme-dot"></span>
+                <span id="portalThemeText">深色模式</span>
+            </button>
+        </div>
+
+        <header>
+            <h1>常用中藥目錄互動測驗</h1>
+            <p class="subtitle">163 味常用中藥完整收錄 · 雙題型無限循環洗牌刷題，確保每輪全品項覆蓋。</p>
+        </header>
+
+        <section class="section">
+            <div class="section-header">
+                <h2 class="section-title">新增考題（無限練習模式）</h2>
+                <span class="section-meta">18 章 28 類 · 163 味</span>
+            </div>
+
+            <div class="exam-list">
+                <a href="tcm-herbs-quiz.html?mode=bilingual" class="exam-item">
+                    <div class="exam-main">
+                        <div class="exam-title-row">
+                            <span class="exam-title">題型一：中英文藥名相互對照</span>
+                            <span class="exam-tag">雙向無限</span>
+                        </div>
+                        <p class="exam-desc">隨機出現中文藥名選英文（如 夏枯草 → Prunellae Spica），或出現英文選中文，智慧干擾選項</p>
+                    </div>
+                    <div class="exam-aside">
+                        <span class="exam-count">163 味</span>
+                        <span class="exam-arrow">→</span>
+                    </div>
+                </a>
+
+                <a href="tcm-herbs-quiz.html?mode=category" class="exam-item">
+                    <div class="exam-main">
+                        <div class="exam-title-row">
+                            <span class="exam-title">題型二：中藥功效種類辨識</span>
+                            <span class="exam-tag">分類無限</span>
+                        </div>
+                        <p class="exam-desc">依 28 類藥效歸屬選出正確種類（如 夏枯草 → 清熱瀉火藥），支援章節指定練習</p>
+                    </div>
+                    <div class="exam-aside">
+                        <span class="exam-count">28 類</span>
+                        <span class="exam-arrow">→</span>
+                    </div>
+                </a>
+
+                <a href="tcm-herbs-quiz.html?mode=mixed" class="exam-item">
+                    <div class="exam-main">
+                        <div class="exam-title-row">
+                            <span class="exam-title">綜合雙題型交替 ＋ 全目錄速查表</span>
+                            <span class="exam-tag">推薦</span>
+                        </div>
+                        <p class="exam-desc">同時混合中英對照與種類分類，含錯題專攻與 163 味完整檢索列表</p>
+                    </div>
+                    <div class="exam-aside">
+                        <span class="exam-count">全覆蓋</span>
+                        <span class="exam-arrow">→</span>
+                    </div>
+                </a>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="section-header">
+                <h2 class="section-title">跨站索引</h2>
+                <span class="section-meta">舊版站點</span>
+            </div>
+
+            <div class="exam-list">
+                <a id="oldSiteLink" href="#" class="exam-item" target="_blank" rel="noopener noreferrer">
+                    <div class="exam-main">
+                        <div class="exam-title-row">
+                            <span class="exam-title">前往舊版醫藥學科測驗網站</span>
+                            <span class="exam-tag">外部索引</span>
+                        </div>
+                        <p class="exam-desc">索引至原大一醫藥專業學科題庫（中醫概論、中藥概論、人體解剖學、藥用植物學、食用部位）</p>
+                    </div>
+                    <div class="exam-aside">
+                        <span class="exam-arrow">↗</span>
+                    </div>
+                </a>
+            </div>
+            <div id="oldUrlWarn" class="config-note">
+                ⚠️ 上傳至新 GitHub Repository 前，請先開啟 <code>index.html</code> 並將 <code>OLD_SITE_URL</code> 改為你的舊測驗網站實際網址（如 <code>https://帳號.github.io/倉庫/</code>）。
+            </div>
+        </section>
+
+        <footer>
+            <span>常用中藥目錄專屬測驗站</span>
+            <span>純靜態網頁 · 支援 GitHub Pages 獨立部署</span>
+        </footer>
+    </div>
+
+    <script>
+        // ============================================================
+        // 【請於上傳至新 GitHub 前設定舊網站網址】
+        // 例如：const OLD_SITE_URL = "https://yourname.github.io/old-quiz/";
+        // ============================================================
+        const OLD_SITE_URL = "https://YOUR_OLD_GITHUB_PAGES_URL/";
+
+        (function initOldLink() {
+            const link = document.getElementById('oldSiteLink');
+            const warn = document.getElementById('oldUrlWarn');
+            const isPlaceholder = !OLD_SITE_URL || OLD_SITE_URL.includes('YOUR_OLD_GITHUB_PAGES_URL');
+            if (isPlaceholder) {
+                if (warn) warn.style.display = 'block';
+                link.removeAttribute('target');
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const custom = prompt('請輸入舊版測驗網站網址（若已設定於程式碼可略過）：', localStorage.getItem('tajen_old_site_url') || 'https://');
+                    if (custom && custom.startsWith('http')) {
+                        try { localStorage.setItem('tajen_old_site_url', custom); } catch(_) {}
+                        window.open(custom, '_blank', 'noopener,noreferrer');
+                    }
+                });
+                try {
+                    const saved = localStorage.getItem('tajen_old_site_url');
+                    if (saved && saved.startsWith('http')) {
+                        link.href = saved;
+                    }
+                } catch(_) {}
+            } else {
+                link.href = OLD_SITE_URL;
+            }
+        })();
+
+        (function initTheme() {
+            const KEY = 'tajen_quiz_theme';
+            function apply(dark) {
+                document.body.classList.toggle('dark-mode', dark);
+                const tx = document.getElementById('portalThemeText');
+                if (tx) tx.textContent = dark ? '淺色模式' : '深色模式';
+            }
+            window.togglePortalTheme = function() {
+                const dark = !document.body.classList.contains('dark-mode');
+                apply(dark);
+                try { localStorage.setItem(KEY, dark ? 'dark' : 'light'); } catch(e) {}
+            };
+            try {
+                if (localStorage.getItem(KEY) === 'dark') apply(true);
+            } catch(e) {}
+        })();
+    </script>
+</body>
+</html>

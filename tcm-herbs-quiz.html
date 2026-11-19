@@ -49,6 +49,8 @@
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
 
+        html { scroll-behavior: smooth; }
+
         body {
             font-family: 'Noto Sans TC', -apple-system, BlinkMacSystemFont, sans-serif;
             background: var(--bg);
@@ -112,13 +114,6 @@
             border-color: var(--border-strong);
         }
 
-        .nav-btn.active {
-            background: var(--accent-subtle);
-            color: var(--accent);
-            border-color: var(--accent);
-            font-weight: 600;
-        }
-
         .site-title {
             font-size: 0.95rem;
             font-weight: 700;
@@ -137,11 +132,11 @@
         main {
             max-width: 820px;
             width: 100%;
-            margin: 16px auto 40px;
+            margin: 16px auto 48px;
             padding: 0 16px;
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 14px;
         }
 
         /* Control Panel */
@@ -229,7 +224,7 @@
         .stats-group {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
             font-variant-numeric: tabular-nums;
             flex-wrap: wrap;
         }
@@ -386,14 +381,14 @@
 
         .option-btn:disabled { cursor: default; }
 
-        /* Feedback Box */
+        /* Feedback & Per-Question Mnemonic Breakdown */
         .feedback-box {
             display: none;
             background: var(--bg);
             border: 1px solid var(--border);
             border-left: 3px solid var(--accent);
             border-radius: 8px;
-            padding: 12px 14px;
+            padding: 13px 15px;
             margin-bottom: 14px;
             font-size: 0.9rem;
         }
@@ -401,12 +396,42 @@
 
         .fb-title {
             font-weight: 700;
-            margin-bottom: 4px;
+            font-size: 0.95rem;
+            margin-bottom: 6px;
         }
-        .fb-detail {
+        .fb-summary {
+            color: var(--ink);
+            font-size: 0.88rem;
+            margin-bottom: 10px;
+            padding-bottom: 8px;
+            border-bottom: 1px dashed var(--border);
+        }
+        .fb-breakdown {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            font-size: 0.84rem;
             color: var(--ink-secondary);
-            font-size: 0.86rem;
-            line-height: 1.6;
+        }
+        .bd-row {
+            display: flex;
+            align-items: baseline;
+            gap: 8px;
+            line-height: 1.5;
+        }
+        .bd-chip {
+            flex-shrink: 0;
+            font-size: 0.72rem;
+            font-weight: 600;
+            padding: 1px 6px;
+            border-radius: 4px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            color: var(--accent);
+        }
+        .bd-token {
+            font-weight: 600;
+            color: var(--ink);
         }
 
         .card-footer {
@@ -443,6 +468,130 @@
             color: #0f172a;
         }
         .btn-primary:hover { opacity: 0.9; }
+
+        /* =========================================================
+           Outside-Quiz Mnemonic Reference Guide (Clean Editorial)
+           ========================================================= */
+        .tips-section {
+            margin-top: 8px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            overflow: hidden;
+        }
+
+        .tips-header {
+            padding: 14px 18px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+            user-select: none;
+            transition: background-color 0.15s ease;
+        }
+        .tips-header:hover {
+            background: var(--surface-hover);
+        }
+
+        .tips-header-left {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+        .tips-title {
+            font-size: 0.98rem;
+            font-weight: 700;
+            color: var(--ink);
+        }
+        .tips-sub {
+            font-size: 0.78rem;
+            color: var(--ink-secondary);
+        }
+        .tips-toggle-pill {
+            font-size: 0.78rem;
+            font-weight: 600;
+            color: var(--accent);
+            background: var(--accent-subtle);
+            padding: 4px 10px;
+            border-radius: 999px;
+            flex-shrink: 0;
+        }
+
+        .tips-body {
+            border-top: 1px solid var(--border);
+            padding: 18px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        .tips-body.collapsed {
+            display: none;
+        }
+
+        .tip-block-title {
+            font-size: 0.88rem;
+            font-weight: 700;
+            color: var(--accent);
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .tip-desc {
+            font-size: 0.82rem;
+            color: var(--ink-secondary);
+            margin-bottom: 10px;
+        }
+
+        .tip-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.82rem;
+        }
+        .tip-table th, .tip-table td {
+            border-bottom: 1px solid var(--border);
+            padding: 7px 8px;
+            text-align: left;
+            vertical-align: top;
+        }
+        .tip-table th {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--ink-muted);
+            background: var(--bg);
+        }
+        .tip-table code {
+            font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--ink);
+        }
+
+        .tip-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 8px;
+        }
+
+        .tip-mini-card {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 7px;
+            padding: 9px 11px;
+            font-size: 0.8rem;
+        }
+        .tip-mini-head {
+            font-weight: 700;
+            color: var(--ink);
+            margin-bottom: 3px;
+            font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+            font-size: 0.78rem;
+        }
+        .tip-mini-body {
+            color: var(--ink-secondary);
+            line-height: 1.5;
+        }
 
         /* Directory Modal */
         .modal-overlay {
@@ -516,12 +665,15 @@
         @media (max-width: 768px) {
             .nav-container { height: 44px; padding: 0 10px; }
             .nav-btn-text { display: none; }
-            .site-title { font-size: 0.9rem; max-width: 150px; }
-            main { margin: 8px auto 30px; padding: 0 10px; gap: 8px; }
+            .site-title { font-size: 0.9rem; max-width: 145px; }
+            main { margin: 8px auto 36px; padding: 0 10px; gap: 10px; }
             .control-bar { padding: 8px 10px; gap: 6px; }
             .quiz-card { padding: 14px; }
             .q-stem { font-size: 1.32rem; margin-bottom: 14px; }
             .option-btn { padding: 10px 12px; font-size: 0.9rem; }
+            .tips-header { padding: 12px 14px; }
+            .tips-body { padding: 14px; gap: 16px; }
+            .tip-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -536,9 +688,13 @@
                 <span class="site-title">常用中藥目錄無限測驗</span>
             </div>
             <div class="nav-actions">
+                <a href="#tipsSection" class="nav-btn" onclick="openTipsSection()" title="記憶訣竅總整理">
+                    <span>💡</span>
+                    <span class="nav-btn-text">記憶訣竅</span>
+                </a>
                 <button class="nav-btn" onclick="openDirectory()" title="全目錄 163 味速查">
                     <span>📖</span>
-                    <span class="nav-btn-text">目錄一覽 (163)</span>
+                    <span class="nav-btn-text">目錄一覽</span>
                 </button>
                 <button class="nav-btn" onclick="resetStats()" title="重設目前紀錄">
                     <span>🔄</span>
@@ -601,7 +757,8 @@
 
             <div class="feedback-box" id="feedbackBox">
                 <div class="fb-title" id="fbTitle"></div>
-                <div class="fb-detail" id="fbDetail"></div>
+                <div class="fb-summary" id="fbSummary"></div>
+                <div class="fb-breakdown" id="fbBreakdown"></div>
             </div>
 
             <div class="card-footer">
@@ -610,6 +767,81 @@
                     <span>答對自動下一題</span>
                 </label>
                 <button class="btn-primary" id="nextBtn" onclick="nextQuestion()">下一題 →</button>
+            </div>
+        </section>
+
+        <!-- Standalone Mnemonic Cheat-Sheet Section Outside Quiz -->
+        <section class="tips-section" id="tipsSection">
+            <div class="tips-header" onclick="toggleTipsBody()">
+                <div class="tips-header-left">
+                    <div class="tips-title">💡 常用中藥英文與分類記憶訣竅總整理</div>
+                    <div class="tips-sub">部位字根公式 ・ 15 組同屬家族串聯 ・ 修飾字根 ・ 12 味特例打包</div>
+                </div>
+                <span class="tips-toggle-pill" id="tipsTogglePill">展開</span>
+            </div>
+
+            <div class="tips-body collapsed" id="tipsBody">
+                <div>
+                    <div class="tip-block-title">一、先認「7 大高頻藥用部位字尾」（覆蓋超過 80% 題目）</div>
+                    <p class="tip-desc">標準結構為 <strong>【植物屬/種名（所有格）】＋【藥用部位】</strong>。看到字尾就能先排除一半錯誤選項：</p>
+                    <table class="tip-table">
+                        <thead>
+                            <tr><th>字尾</th><th>意義</th><th>次數</th><th>記憶聯想與實例</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td><code>Radix</code></td><td>根</td><td>42</td><td>像 radish（蘿蔔）→ 黃耆 <code>Astragali Radix</code>、當歸 <code>Angelicae Sinensis Radix</code></td></tr>
+                            <tr><td><code>Rhizoma</code></td><td>根莖</td><td>30</td><td>山藥 <code>Dioscoreae Rhizoma</code>、黃連 <code>Coptidis Rhizoma</code></td></tr>
+                            <tr><td><code>Fructus</code></td><td>果實</td><td>24</td><td>像 fruit → 枸杞子 <code>Lycii Fructus</code>、五味子 <code>Schisandrae Fructus</code></td></tr>
+                            <tr><td><code>Semen</code></td><td>種子</td><td>15</td><td>像 seed → 車前子 <code>Plantaginis Semen</code>、桃仁 <code>Persicae Semen</code></td></tr>
+                            <tr><td><code>Herba</code></td><td>全草</td><td>15</td><td>像 herb → 麻黃 <code>Ephedrae Herba</code>、薄荷 <code>Menthae Herba</code></td></tr>
+                            <tr><td><code>Cortex</code></td><td>樹皮/皮</td><td>8</td><td>表皮/皮質 → 肉桂 <code>Cinnamomi Cortex</code>、杜仲 <code>Eucommiae Cortex</code></td></tr>
+                            <tr><td><code>Flos</code></td><td>花</td><td>7</td><td>像 flower → 紅花 <code>Carthami Flos</code>、菊花 <code>Chrysanthemi Flos</code></td></tr>
+                            <tr><td><code>Radicis Cortex</code></td><td>根皮</td><td>4</td><td>Radix所有格＋皮 → 地骨皮 <code>Lycii</code>、牡丹皮 <code>Moutan</code>、桑白皮 <code>Mori</code>、五加皮</td></tr>
+                            <tr><td><code>Bulbus / Folium / Caulis</code></td><td>鱗莖/葉/莖</td><td>各 3</td><td>百合/貝母/蔥白 (<code>Bulbus</code>)；紫蘇/枇杷/艾葉 (<code>Folium</code>)；石斛/木通/竹茹 (<code>Caulis</code>)</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div>
+                    <div class="tip-block-title">二、「同植物家族」15 組串聯記憶（背一個屬名記多味藥）</div>
+                    <div class="tip-grid" id="genusGrid"></div>
+                </div>
+
+                <div>
+                    <div class="tip-block-title">三、高頻顏色、味道與加工修飾詞（常決定單選題細節）</div>
+                    <div class="tip-grid">
+                        <div class="tip-mini-card"><div class="tip-mini-head">Alba / Album (白色)</div><div class="tip-mini-body">白芍 (<code>Paeoniae Alba Radix</code>)、白扁豆 (<code>Lablab Album Semen</code>)</div></div>
+                        <div class="tip-mini-card"><div class="tip-mini-head">Rubra (赤／紅色)</div><div class="tip-mini-body">赤芍 (<code>Paeoniae Rubra Radix</code>)</div></div>
+                        <div class="tip-mini-card"><div class="tip-mini-head">Amarum (苦味)</div><div class="tip-mini-body">苦杏仁 (<code>ARMENIACAE SEMEN AMARUM</code>)</div></div>
+                        <div class="tip-mini-card"><div class="tip-mini-head">Immaturus (未成熟)</div><div class="tip-mini-body">枳殼、枳實、覆盆子、槐花 (<code>Flos Immaturus</code>)</div></div>
+                        <div class="tip-mini-card"><div class="tip-mini-head">Praeparatum (炮製/發酵)</div><div class="tip-mini-body">炮薑 (<code>Zingiberis...</code>)、淡豆豉 (<code>Sojae Semen...</code>)</div></div>
+                        <div class="tip-mini-card"><div class="tip-mini-head">Germinatus (發芽的)</div><div class="tip-mini-body">麥芽 (<code>Hordei...</code>)、穀牙 (<code>Oryzae...</code>)</div></div>
+                    </div>
+                </div>
+
+                <div>
+                    <div class="tip-block-title">四、中文音譯送分題 &amp; 12 大單字／非植物特例打包</div>
+                    <div class="tip-grid">
+                        <div class="tip-mini-card">
+                            <div class="tip-mini-head">中文音譯／直接認讀</div>
+                            <div class="tip-mini-body">
+                                人參 <code>Ginseng</code>、川芎 <code>Chuanxiong</code>、牡丹皮 <code>Moutan</code>、三七 <code>Notoginseng</code>、蘇木 <code>Sappan</code>、白果 <code>Ginkgo</code>
+                            </div>
+                        </div>
+                        <div class="tip-mini-card">
+                            <div class="tip-mini-head">6 味單字藥材（無部位詞）</div>
+                            <div class="tip-mini-body">
+                                茯苓 <code>Poria</code>、豬苓 <code>Polyporus</code>、冬蟲夏草 <code>Cordyceps</code>、蘆薈 <code>Aloe</code>、乳香 <code>Olibanum</code>、水蛭 <code>Hirudo</code>
+                            </div>
+                        </div>
+                        <div class="tip-mini-card">
+                            <div class="tip-mini-head">6 味動物／樹脂／發酵特殊組</div>
+                            <div class="tip-mini-body">
+                                阿膠 <code>Asini Corii Colla</code>（驢皮膠）、龜板 <code>Testudinis Carapax</code>（龜背甲）、鹿茸 <code>Cervi Cornu Pantotrichum</code>（鹿角）、白殭蠶 <code>Bombyx Batryticatus</code>、血竭 <code>Draconis Sanguis</code>（龍血）、神麴 <code>Massa Medicata Fermentata</code>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </section>
     </main>
@@ -659,6 +891,148 @@
         try {
             if (localStorage.getItem(THEME_KEY) === 'dark') applyTheme(true);
         } catch(e) {}
+
+        // Tips collapse/open controls
+        function toggleTipsBody() {
+            const body = document.getElementById('tipsBody');
+            const pill = document.getElementById('tipsTogglePill');
+            const collapsed = body.classList.toggle('collapsed');
+            pill.textContent = collapsed ? '展開' : '收合';
+        }
+        function openTipsSection() {
+            const body = document.getElementById('tipsBody');
+            const pill = document.getElementById('tipsTogglePill');
+            if (body.classList.contains('collapsed')) {
+                body.classList.remove('collapsed');
+                pill.textContent = '收合';
+            }
+        }
+
+        // Dictionary for smart per-question Latin root breakdown
+        const PART_GLOSSARY = [
+            { key: 'radix et rhizoma', label: 'Radix et Rhizoma', desc: '根及根莖（兩部位並用）' },
+            { key: 'radicis cortex', label: 'Radicis Cortex', desc: '根皮（Radix 根的所有格 ＋ Cortex 皮）' },
+            { key: 'flos et flos immaturus', label: 'Flos et Flos Immaturus', desc: '花及未成熟花蕾' },
+            { key: 'ramulus cum uncis', label: 'Ramulus cum Uncis', desc: '帶鉤的嫩枝條' },
+            { key: 'caulis in taenias', label: 'Caulis In Taenias', desc: '削成的帶狀／條片狀莖稈' },
+            { key: 'lignum resinatum', label: 'Lignum Resinatum', desc: '富含樹脂的心材（Lignum 木材）' },
+            { key: 'radix', label: 'Radix', desc: '根部（字根類似 radish 蘿蔔）' },
+            { key: 'rhizoma', label: 'Rhizoma', desc: '根莖（地下橫走莖）' },
+            { key: 'fructus', label: 'Fructus', desc: '果實（字根類似 fruit）' },
+            { key: 'semen', label: 'Semen', desc: '種子（字根類似 seed）' },
+            { key: 'herba', label: 'Herba', desc: '全草／地上部分（字根類似 herb）' },
+            { key: 'cortex', label: 'Cortex', desc: '樹皮／表皮' },
+            { key: 'flos', label: 'Flos', desc: '花／花蕾（字根類似 flower）' },
+            { key: 'folium', label: 'Folium', desc: '葉片（字根類似 foliage 葉）' },
+            { key: 'bulbus', label: 'Bulbus', desc: '鱗莖（字根類似 bulb 球莖）' },
+            { key: 'caulis', label: 'Caulis', desc: '莖／藤莖' },
+            { key: 'pericarpium', label: 'Pericarpium', desc: '果皮（peri- 外圍 ＋ carp 果實）' },
+            { key: 'sarcocarpium', label: 'Sarcocarpium', desc: '果肉（肉質果皮）' },
+            { key: 'spica', label: 'Spica', desc: '花穗／果穗（像 spike）' },
+            { key: 'spina', label: 'Spina', desc: '棘刺（字根類似 spine 刺）' },
+            { key: 'cacumen', label: 'Cacumen', desc: '枝梢與嫩葉' },
+            { key: 'medulla', label: 'Medulla', desc: '莖髓（中心髓部）' },
+            { key: 'thallus', label: 'Thallus', desc: '葉狀體（藻類）' },
+            { key: 'lignum', label: 'Lignum', desc: '木材／心材' }
+        ];
+
+        const MODIFIER_GLOSSARY = [
+            { key: 'alba', label: 'Alba', desc: '白色的（如白芍）' },
+            { key: 'album', label: 'Album', desc: '白色的（如白扁豆）' },
+            { key: 'rubra', label: 'Rubra', desc: '赤紅色的（如赤芍）' },
+            { key: 'amarum', label: 'Amarum', desc: '苦味的（如苦杏仁）' },
+            { key: 'immaturus', label: 'Immaturus', desc: '未成熟的（幼果或未開之花蕾）' },
+            { key: 'praeparatum', label: 'Praeparatum', desc: '經炮製／發酵處理的' },
+            { key: 'germinatus', label: 'Germinatus', desc: '已發芽的（如麥芽、穀牙）' },
+            { key: 'sinensis', label: 'Sinensis', desc: '中國產的' },
+            { key: 'japonicae', label: 'Japonicae', desc: '日本／東亞忍冬種名' },
+            { key: 'macrocephalae', label: 'Macrocephalae', desc: 'macro(大) ＋ cephalae(頭)，指根莖肥大（白朮）' },
+            { key: 'quinquefolii', label: 'Quinquefolii', desc: 'quinque(五) ＋ folii(葉)，五片複葉（西洋參）' },
+            { key: 'multiflori', label: 'Multiflori', desc: 'multi(多) ＋ flori(花)，多花（何首烏）' },
+            { key: 'longae', label: 'Longae', desc: '長的（薑黃）' },
+            { key: 'reticulatae', label: 'Reticulatae', desc: '具網狀紋理的（柑橘／陳皮）' },
+            { key: 'annuae', label: 'Annuae', desc: '一年生的（青蒿）' },
+            { key: 'officinalis', label: 'Officinalis / Officinarum', desc: '傳統藥用的（officinalis 藥房用）' },
+            { key: 'lateralis', label: 'Lateralis', desc: '側生的子根（附子附生於烏頭旁）' }
+        ];
+
+        const SPECIAL_TIPS = {
+            '人參': 'Ginseng 為中文「人參」經典音譯，可直接唸出聯想。',
+            '川芎': 'Chuanxiong 為中文「川芎」漢語拼音直譯。',
+            '牡丹皮': 'Moutan 為中文「牡丹」音譯；Radicis Cortex 代表「根皮」。',
+            '三七': 'Notoginseng 意為「假人參／田七」，屬於五加科參屬親戚。',
+            '蘇木': 'Sappan 取自馬來語/音譯蘇木；Lignum 指木材心材。',
+            '白果': 'Ginkgo 即日常熟知的「銀杏」；Semen 指種子。',
+            '茯苓': '單字真菌特例：Poria（多孔菌科菌核，無部位字尾）。',
+            '豬苓': '單字真菌特例：Polyporus（poly 多 ＋ porus 孔＝多孔菌）。',
+            '冬蟲夏草': '單字真菌特例：Cordyceps（蟲草屬菌名直接當藥名）。',
+            '蘆薈': '單字特例：Aloe 即英文常見的「蘆薈」。',
+            '乳香': '單字樹脂特例：Olibanum（沒藥同類樹脂，無部位字尾）。',
+            '水蛭': '單字動物特例：Hirudo（水蛭屬學名，分泌水蛭素 hirudin）。',
+            '阿膠': '動物膠特例：Asini（驢）＋ Corii（皮革）＋ Colla（膠＝collagen 聯想）。',
+            '龜板': '動物甲殼特例：Testudinis（龜）＋ Carapax（背甲／龜殼，類似 carapace）。',
+            '鹿茸': '動物角特例：Cervi（鹿）＋ Cornu（角，聯想 unicorn 獨角獸）＋ Pantotrichum（全披絨毛）。',
+            '白殭蠶': '動物特例：Bombyx（家蠶屬）＋ Batryticatus（被白僵菌感染僵化）。',
+            '血竭': '樹脂特例：Draconis（龍的）＋ Sanguis（血＝sanguine），直譯即「龍血竭」。',
+            '神麴': '發酵曲劑特例：Massa（藥塊/團塊）＋ Medicata（入藥的）＋ Fermentata（經發酵的）。'
+        };
+
+        // Group same-genus families for dynamic cross-reference and the outside-quiz table
+        const GENUS_MAP = {};
+        HERBS_DATA.forEach(h => {
+            const first = h.en.split(/\s+/)[0].toLowerCase();
+            if (!GENUS_MAP[first]) GENUS_MAP[first] = [];
+            GENUS_MAP[first].push(h);
+        });
+
+        // Populate outside-quiz 15 genus families grid
+        (function renderGenusTips() {
+            const grid = document.getElementById('genusGrid');
+            const families = Object.entries(GENUS_MAP).filter(([, list]) => list.length >= 2);
+            grid.innerHTML = families.map(([genus, list]) => {
+                const cap = genus.charAt(0).toUpperCase() + genus.slice(1);
+                const lines = list.map(h => `<strong>${h.zh}</strong> (<code>${h.en}</code>)`).join('<br>');
+                return `<div class="tip-mini-card"><div class="tip-mini-head">${cap} 屬（共 ${list.length} 味）</div><div class="tip-mini-body">${lines}</div></div>`;
+            }).join('');
+        })();
+
+        function buildHerbBreakdownHtml(item) {
+            const rows = [];
+            const enLower = item.en.toLowerCase();
+
+            // 1. Special / Pinyin direct tip
+            if (SPECIAL_TIPS[item.zh]) {
+                rows.push(`<div class="bd-row"><span class="bd-chip">特別記憶</span><span>${SPECIAL_TIPS[item.zh]}</span></div>`);
+            }
+
+            // 2. Part root match
+            const matchedPart = PART_GLOSSARY.find(p => enLower.includes(p.key));
+            if (matchedPart) {
+                rows.push(`<div class="bd-row"><span class="bd-chip">部位字根</span><span><span class="bd-token">${matchedPart.label}</span> ＝ ${matchedPart.desc}</span></div>`);
+            }
+
+            // 3. Modifier root matches
+            const tokens = enLower.split(/\s+/);
+            const modHits = MODIFIER_GLOSSARY.filter(m => tokens.some(t => m.key.split(' / ').includes(t)));
+            if (modHits.length > 0) {
+                const modText = modHits.map(m => `<span class="bd-token">${m.label}</span>（${m.desc}）`).join('；');
+                rows.push(`<div class="bd-row"><span class="bd-chip">特徵字根</span><span>${modText}</span></div>`);
+            }
+
+            // 4. Shared genus family cross-reference
+            const first = tokens[0];
+            const siblings = (GENUS_MAP[first] || []).filter(s => s.id !== item.id);
+            if (siblings.length > 0) {
+                const sibText = siblings.map(s => `<strong>${s.zh}</strong> (<code>${s.en}</code>)`).join('、');
+                rows.push(`<div class="bd-row"><span class="bd-chip">同屬串聯</span><span>與本品同屬（${item.en.split(/\s+/)[0]}）：${sibText}</span></div>`);
+            }
+
+            // 5. Category placement tip
+            const secText = item.section ? ` → ${item.section}` : '';
+            rows.push(`<div class="bd-row"><span class="bd-chip">功效分類</span><span>${item.chapter}${secText}（記憶重點：將「<strong>${item.zh}</strong>」歸入 <strong>${item.category}</strong>）</span></div>`);
+
+            return rows.join('');
+        }
 
         // Unique categories & chapters
         const ALL_CATEGORIES = [...new Set(HERBS_DATA.map(h => h.category))];
@@ -747,7 +1121,6 @@
             return item.alt_en ? `${item.en} (${item.alt_en})` : item.en;
         }
 
-        // Smart distractor helper for Latin names (prefers same medicinal part suffix like Radix/Fructus/Herba)
         function getPartSuffix(en) {
             const parts = en.trim().split(/\s+/);
             return parts[parts.length - 1].toLowerCase();
@@ -812,7 +1185,6 @@
                     };
                 }
             } else {
-                // Category mode: Chinese herb -> choose Category
                 const correctCat = item.category;
                 const otherCats = shuffle(ALL_CATEGORIES.filter(c => c !== correctCat)).slice(0, 3);
                 const options = shuffle([correctCat, ...otherCats]);
@@ -903,18 +1275,19 @@
 
             const fbBox = document.getElementById('feedbackBox');
             const fbTitle = document.getElementById('fbTitle');
-            const fbDetail = document.getElementById('fbDetail');
+            const fbSummary = document.getElementById('fbSummary');
+            const fbBreakdown = document.getElementById('fbBreakdown');
 
             fbTitle.textContent = isRight ? '✓ 答對了！' : `✗ 答錯了 — 正確答案：${currentQuestion.correct}`;
             fbTitle.style.color = isRight ? 'var(--success)' : 'var(--error)';
 
             const it = currentQuestion.item;
-            const secStr = it.section ? ` · ${it.section}` : '';
-            fbDetail.innerHTML = `<strong>${it.zh}</strong>｜${getEnDisplay(it)}<br>分類：<strong>${it.category}</strong>（${it.chapter}${secStr}）`;
+            fbSummary.innerHTML = `<strong>${it.zh}</strong> ｜ <code>${getEnDisplay(it)}</code> ｜ <span class="badge">${it.category}</span>`;
+            fbBreakdown.innerHTML = buildHerbBreakdownHtml(it);
             fbBox.classList.add('show');
 
             if (isRight && document.getElementById('autoNextCheck').checked) {
-                autoNextTimer = setTimeout(() => nextQuestion(), 650);
+                autoNextTimer = setTimeout(() => nextQuestion(), 850);
             }
         }
 

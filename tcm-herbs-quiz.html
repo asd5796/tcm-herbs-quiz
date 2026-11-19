@@ -1,0 +1,1022 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>常用中藥目錄無限測驗 · 中英對照與種類分類</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #f6f5f1;
+            --surface: #ffffff;
+            --surface-hover: #faf9f6;
+            --border: #e5e3dc;
+            --border-strong: #d4d1c7;
+            --ink: #171716;
+            --ink-secondary: #686660;
+            --ink-muted: #94918a;
+            --accent: #185c4b;
+            --accent-subtle: rgba(24, 92, 75, 0.08);
+            --success: #15803d;
+            --success-bg: #dcfce7;
+            --error: #b91c1c;
+            --error-bg: #fee2e2;
+            --star: #d97706;
+            --star-bg: #fef3c7;
+            --radius: 10px;
+        }
+
+        body.dark-mode {
+            --bg: #111315;
+            --surface: #181a1d;
+            --surface-hover: #1f2226;
+            --border: #272a2f;
+            --border-strong: #363a41;
+            --ink: #eceae4;
+            --ink-secondary: #9498a0;
+            --ink-muted: #646870;
+            --accent: #56b89d;
+            --accent-subtle: rgba(86, 184, 157, 0.12);
+            --success: #22c55e;
+            --success-bg: rgba(34, 197, 94, 0.18);
+            --error: #ef4444;
+            --error-bg: rgba(239, 68, 68, 0.18);
+            --star: #fbbf24;
+            --star-bg: rgba(251, 191, 36, 0.18);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Noto Sans TC', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg);
+            color: var(--ink);
+            line-height: 1.55;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            transition: background-color 0.2s ease, color 0.2s ease;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Ultra-slim sticky top bar (44px on mobile) */
+        header {
+            background: var(--surface);
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 50;
+        }
+
+        .nav-container {
+            max-width: 960px;
+            margin: 0 auto;
+            height: 50px;
+            padding: 0 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            min-width: 0;
+        }
+
+        .nav-btn {
+            background: var(--surface);
+            color: var(--ink-secondary);
+            border: 1px solid var(--border);
+            padding: 5px 10px;
+            border-radius: 6px;
+            font-size: 0.8125rem;
+            font-weight: 500;
+            font-family: inherit;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            white-space: nowrap;
+            transition: all 0.15s ease;
+        }
+
+        .nav-btn:hover {
+            background: var(--surface-hover);
+            color: var(--ink);
+            border-color: var(--border-strong);
+        }
+
+        .nav-btn.active {
+            background: var(--accent-subtle);
+            color: var(--accent);
+            border-color: var(--accent);
+            font-weight: 600;
+        }
+
+        .site-title {
+            font-size: 0.95rem;
+            font-weight: 700;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            flex-shrink: 0;
+        }
+
+        main {
+            max-width: 820px;
+            width: 100%;
+            margin: 16px auto 40px;
+            padding: 0 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        /* Control Panel */
+        .control-bar {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 10px 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .mode-tabs {
+            display: flex;
+            gap: 6px;
+            overflow-x: auto;
+            scrollbar-width: none;
+            -webkit-overflow-scrolling: touch;
+        }
+        .mode-tabs::-webkit-scrollbar { display: none; }
+
+        .tab-btn {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            color: var(--ink-secondary);
+            padding: 5px 12px;
+            border-radius: 999px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            font-family: inherit;
+            cursor: pointer;
+            white-space: nowrap;
+            flex-shrink: 0;
+            transition: all 0.15s ease;
+        }
+        .tab-btn:hover {
+            border-color: var(--border-strong);
+            color: var(--ink);
+        }
+        .tab-btn.active {
+            background: var(--ink);
+            color: var(--surface);
+            border-color: var(--ink);
+        }
+        body.dark-mode .tab-btn.active {
+            background: var(--accent);
+            color: #0f172a;
+            border-color: var(--accent);
+        }
+        .tab-btn.wrong-tab {
+            color: var(--error);
+            background: var(--error-bg);
+            border-color: rgba(185, 28, 28, 0.3);
+        }
+        .tab-btn.wrong-tab.active {
+            background: var(--error);
+            color: #fff;
+            border-color: var(--error);
+        }
+
+        .sub-controls {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            padding-top: 6px;
+            border-top: 1px solid var(--border);
+            flex-wrap: wrap;
+            font-size: 0.78rem;
+            color: var(--ink-secondary);
+        }
+
+        .select-inline {
+            background: var(--bg);
+            color: var(--ink);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 3px 8px;
+            font-size: 0.78rem;
+            font-family: inherit;
+            cursor: pointer;
+        }
+
+        .stats-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-variant-numeric: tabular-nums;
+            flex-wrap: wrap;
+        }
+
+        .stat-pill {
+            font-weight: 600;
+            padding: 1px 6px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+        }
+        .stat-ok { background: var(--success-bg); color: var(--success); }
+        .stat-err { background: var(--error-bg); color: var(--error); }
+        .stat-round { background: var(--accent-subtle); color: var(--accent); }
+
+        .progress-track {
+            background: var(--border);
+            height: 3px;
+            border-radius: 2px;
+            overflow: hidden;
+        }
+        .progress-fill {
+            background: var(--accent);
+            height: 100%;
+            width: 0%;
+            transition: width 0.25s ease;
+        }
+
+        /* Quiz Card */
+        .quiz-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 22px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .q-meta {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            margin-bottom: 14px;
+            flex-wrap: wrap;
+        }
+
+        .q-badges {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .badge {
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 2px 8px;
+            border-radius: 4px;
+            background: var(--accent-subtle);
+            color: var(--accent);
+        }
+        .badge-dir {
+            background: var(--star-bg);
+            color: var(--star);
+        }
+
+        .q-counter {
+            font-size: 0.8rem;
+            color: var(--ink-muted);
+            font-variant-numeric: tabular-nums;
+        }
+
+        .q-prompt {
+            font-size: 0.82rem;
+            color: var(--ink-secondary);
+            margin-bottom: 6px;
+        }
+
+        .q-stem {
+            font-size: 1.55rem;
+            font-weight: 700;
+            color: var(--ink);
+            margin-bottom: 18px;
+            line-height: 1.4;
+            word-break: break-word;
+        }
+
+        .options-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 16px;
+        }
+
+        .option-btn {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 14px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            background: var(--surface);
+            color: var(--ink);
+            font-size: 0.98rem;
+            font-weight: 500;
+            font-family: inherit;
+            cursor: pointer;
+            text-align: left;
+            transition: all 0.14s ease;
+        }
+
+        .option-btn:hover:not(:disabled) {
+            background: var(--surface-hover);
+            border-color: var(--border-strong);
+        }
+
+        .opt-key {
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--ink-secondary);
+            flex-shrink: 0;
+        }
+
+        .option-btn.correct {
+            border-color: var(--success);
+            background: var(--success-bg);
+            color: var(--success);
+            font-weight: 600;
+        }
+        .option-btn.correct .opt-key {
+            background: var(--success);
+            color: #fff;
+            border-color: var(--success);
+        }
+
+        .option-btn.wrong {
+            border-color: var(--error);
+            background: var(--error-bg);
+            color: var(--error);
+            font-weight: 600;
+        }
+        .option-btn.wrong .opt-key {
+            background: var(--error);
+            color: #fff;
+            border-color: var(--error);
+        }
+
+        .option-btn:disabled { cursor: default; }
+
+        /* Feedback Box */
+        .feedback-box {
+            display: none;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-left: 3px solid var(--accent);
+            border-radius: 8px;
+            padding: 12px 14px;
+            margin-bottom: 14px;
+            font-size: 0.9rem;
+        }
+        .feedback-box.show { display: block; }
+
+        .fb-title {
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+        .fb-detail {
+            color: var(--ink-secondary);
+            font-size: 0.86rem;
+            line-height: 1.6;
+        }
+
+        .card-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        .auto-next-wrap {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.8rem;
+            color: var(--ink-secondary);
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .btn-primary {
+            background: var(--ink);
+            color: var(--surface);
+            border: none;
+            padding: 9px 18px;
+            border-radius: 7px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            font-family: inherit;
+            cursor: pointer;
+            transition: opacity 0.15s ease;
+        }
+        body.dark-mode .btn-primary {
+            background: var(--accent);
+            color: #0f172a;
+        }
+        .btn-primary:hover { opacity: 0.9; }
+
+        /* Directory Modal */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.55);
+            backdrop-filter: blur(3px);
+            z-index: 100;
+            align-items: center;
+            justify-content: center;
+            padding: 14px;
+        }
+        .modal-overlay.open { display: flex; }
+
+        .modal-box {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            width: 100%;
+            max-width: 720px;
+            max-height: 85vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .modal-head {
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        .modal-search {
+            width: 100%;
+            padding: 7px 10px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            background: var(--bg);
+            color: var(--ink);
+            font-family: inherit;
+            font-size: 0.85rem;
+        }
+
+        .modal-body {
+            padding: 12px 16px;
+            overflow-y: auto;
+            font-size: 0.84rem;
+        }
+
+        .dir-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .dir-table th, .dir-table td {
+            border-bottom: 1px solid var(--border);
+            padding: 7px 6px;
+            text-align: left;
+        }
+        .dir-table th {
+            font-size: 0.78rem;
+            color: var(--ink-muted);
+            position: sticky;
+            top: -12px;
+            background: var(--surface);
+        }
+
+        @media (max-width: 768px) {
+            .nav-container { height: 44px; padding: 0 10px; }
+            .nav-btn-text { display: none; }
+            .site-title { font-size: 0.9rem; max-width: 150px; }
+            main { margin: 8px auto 30px; padding: 0 10px; gap: 8px; }
+            .control-bar { padding: 8px 10px; gap: 6px; }
+            .quiz-card { padding: 14px; }
+            .q-stem { font-size: 1.32rem; margin-bottom: 14px; }
+            .option-btn { padding: 10px 12px; font-size: 0.9rem; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="nav-container">
+            <div class="nav-left">
+                <a href="index.html" class="nav-btn" title="返回首頁">
+                    <span>←</span>
+                    <span class="nav-btn-text">首頁</span>
+                </a>
+                <span class="site-title">常用中藥目錄無限測驗</span>
+            </div>
+            <div class="nav-actions">
+                <button class="nav-btn" onclick="openDirectory()" title="全目錄 163 味速查">
+                    <span>📖</span>
+                    <span class="nav-btn-text">目錄一覽 (163)</span>
+                </button>
+                <button class="nav-btn" onclick="resetStats()" title="重設目前紀錄">
+                    <span>🔄</span>
+                    <span class="nav-btn-text">重設</span>
+                </button>
+                <button id="themeToggleBtn" class="nav-btn" onclick="toggleTheme()" title="切換深色模式">
+                    <span id="themeIcon">🌙</span>
+                    <span id="themeText" class="nav-btn-text">深色</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section class="control-bar">
+            <div class="mode-tabs" id="modeTabs">
+                <button class="tab-btn active" data-mode="bilingual" onclick="setMode('bilingual', this)">🔤 中英對照 (雙向)</button>
+                <button class="tab-btn" data-mode="category" onclick="setMode('category', this)">🏷️ 選出種類</button>
+                <button class="tab-btn" data-mode="mixed" onclick="setMode('mixed', this)">⚡ 綜合無限</button>
+                <button class="tab-btn wrong-tab" data-mode="wrong" onclick="setMode('wrong', this)">🎯 錯題重練 (<span id="wrongDeckCount">0</span>)</button>
+            </div>
+
+            <div class="sub-controls">
+                <div style="display:flex; align-items:center; gap:6px; flex-wrap:wrap;">
+                    <select id="chapterFilter" class="select-inline" onchange="onFilterChange()" title="篩選章節範圍">
+                        <option value="ALL">全部章節（共 163 味）</option>
+                    </select>
+                    <select id="dirFilter" class="select-inline" onchange="onDirectionChange()" title="中英題型出題方向">
+                        <option value="both">雙向隨機 (中⇄英)</option>
+                        <option value="zh2en">只考 中 → 英</option>
+                        <option value="en2zh">只考 英 → 中</option>
+                    </select>
+                </div>
+                <div class="stats-group">
+                    <span class="stat-pill stat-round" id="roundStat">第 1 輪 · 0/163</span>
+                    <span class="stat-pill stat-ok">對 <span id="correctCount">0</span></span>
+                    <span class="stat-pill stat-err">錯 <span id="wrongCount">0</span></span>
+                    <span id="streakStat">連對 0</span>
+                </div>
+            </div>
+
+            <div class="progress-track">
+                <div class="progress-fill" id="progressBar"></div>
+            </div>
+        </section>
+
+        <section class="quiz-card">
+            <div class="q-meta">
+                <div class="q-badges">
+                    <span class="badge" id="typeBadge">中英對照</span>
+                    <span class="badge badge-dir" id="subBadge">中 → 英</span>
+                </div>
+                <span class="q-counter" id="qCounter">總累計第 1 題</span>
+            </div>
+
+            <div class="q-prompt" id="qPrompt">請選出此中藥對應的英文（拉丁藥用名）：</div>
+            <div class="q-stem" id="qStem">載入中...</div>
+
+            <div class="options-list" id="optionsList"></div>
+
+            <div class="feedback-box" id="feedbackBox">
+                <div class="fb-title" id="fbTitle"></div>
+                <div class="fb-detail" id="fbDetail"></div>
+            </div>
+
+            <div class="card-footer">
+                <label class="auto-next-wrap">
+                    <input type="checkbox" id="autoNextCheck">
+                    <span>答對自動下一題</span>
+                </label>
+                <button class="btn-primary" id="nextBtn" onclick="nextQuestion()">下一題 →</button>
+            </div>
+        </section>
+    </main>
+
+    <!-- Full 163 Herbs Directory Modal -->
+    <div class="modal-overlay" id="dirModal" onclick="if(event.target===this)closeDirectory()">
+        <div class="modal-box">
+            <div class="modal-head">
+                <strong style="font-size:0.95rem;">常用中藥目錄總表（全 163 味）</strong>
+                <input type="text" id="dirSearch" class="modal-search" placeholder="搜尋中文藥名、英文或分類（如：夏枯草、清熱瀉火藥、Radix）..." oninput="renderDirectory()" style="max-width:340px;">
+                <button class="nav-btn" onclick="closeDirectory()">✕</button>
+            </div>
+            <div class="modal-body">
+                <table class="dir-table">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>中藥名</th>
+                            <th>英文 / 拉丁名</th>
+                            <th>種類</th>
+                            <th>章節</th>
+                        </tr>
+                    </thead>
+                    <tbody id="dirTbody"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const HERBS_DATA = [{"id": 1, "zh": "人參", "en": "Ginseng Radix et Rhizoma", "alt_en": "", "chapter": "第一章 補虛藥", "chapter_name": "補虛藥", "section": "第一節 補氣藥", "category": "補氣藥", "raw": "人參（Ginseng Radix et Rhizoma）"}, {"id": 2, "zh": "西洋參", "en": "Panacis Quinquefolii Radix", "alt_en": "", "chapter": "第一章 補虛藥", "chapter_name": "補虛藥", "section": "第一節 補氣藥", "category": "補氣藥", "raw": "西洋參（Panacis Quinquefolii Radix）"}, {"id": 3, "zh": "黨參", "en": "Codonopsis Radix", "alt_en": "", "chapter": "第一章 補虛藥", "chapter_name": "補虛藥", "section": "第一節 補氣藥", "category": "補氣藥", "raw": "黨參（Codonopsis Radix）"}, {"id": 4, "zh": "黃耆", "en": "Astragali Radix", "alt_en": "", "chapter": "第一章 補虛藥", "chapter_name": "補虛藥", "section": "第一節 補氣藥", "category": "補氣藥", "raw": "黃耆（Astragali Radix）"}, {"id": 5, "zh": "山藥", "en": "Dioscoreae Rhizoma", "alt_en": "", "chapter": "第一章 補虛藥", "chapter_name": "補虛藥", "section": "第一節 補氣藥", "category": "補氣藥", "raw": "山藥（Dioscoreae Rhizoma）"}, {"id": 6, "zh": "白扁豆", "en": "Lablab Album Semen", "alt_en": "", "chapter": "第一章 補虛藥", "chapter_name": "補虛藥", "section": "第一節 補氣藥", "category": "補氣藥", "raw": "白扁豆（Lablab Album Semen）"}, {"id": 7, "zh": "大棗", "en": "Jujubae Fructus", "alt_en": "", "chapter": "第一章 補虛藥", "chapter_name": "補虛藥", "section": "第一節 補氣藥", "category": "補氣藥", "raw": "大棗（Jujubae Fructus）"}, {"id": 8, "zh": "甘草", "en": "Glycyrrhizae Radix et Rhizoma", "alt_en": "", "chapter": "第一章 補虛藥", "chapter_name": "補虛藥", "section": "第一節 補氣藥", "category": "補氣藥", "raw": "甘草（Glycyrrhizae Radix et Rhizoma）"}, {"id": 9, "zh": "當歸", "en": "Angelicae Sinensis Radix", "alt_en": "", "chapter": "第一章 補虛藥", "chapter_name": "補虛藥", "section": "第二節 補血藥", "category": "補血藥", "raw": "當歸（Angelicae Sinensis Radix）"}, {"id": 10, "zh": "地黃", "en": "Rehmanniae Radix", "alt_en": "", "chapter": "第一章 補虛藥", "chapter_name": "補虛藥", "section": "第二節 補血藥", "category": "補血藥", "raw": "地黃（Rehmanniae Radix）"}, {"id": 11, "zh": "白芍", "en": "Paeoniae Alba Radix", "alt_en": "PAEONIAE RADIX ALBA", "chapter": "第一章 補虛藥", "chapter_name": "補虛藥", "section": "第二節 補血藥", "category": "補血藥", "raw": "白芍（Paeoniae Alba Radix） (PAEONIAE RADIX ALBA)"}, {"id": 12, "zh": "何首烏", "en": "Polygoni Multiflori Radix", "alt_en": "PLEUROPTERII MULTIFLORII RADIX", "chapter": "第一章 補虛藥", "chapter_name": "補虛藥", "section": "第二節 補血藥", "category": "補血藥", "raw": "何首烏（Polygoni Multiflori Radix） (PLEUROPTERII MULTIFLORII RADIX)"}, {"id": 13, "zh": "阿膠", "en": "Asini Corii Colla", "alt_en": "", "chapter": "第一章 補虛藥", "chapter_name": "補虛藥", "section": "第二節 補血藥", "category": "補血藥", "raw": "阿膠（Asini Corii Colla）"}, {"id": 14, "zh": "枸杞子", "en": "Lycii Fructus", "alt_en": "", "chapter": "第一章 補虛藥", "chapter_name": "補虛藥", "section": "第三節 補陰藥", "category": "補陰藥", "raw": "枸杞子（Lycii Fructus）"}, {"id": 15, "zh": "麥門冬", "en": "Ophiopogonis Radix", "alt_en": "", "chapter": "第一章 補虛藥", "chapter_name": "補虛藥", "section": "第三節 補陰藥", "category": "補陰藥", "raw": "麥門冬（Ophiopogonis Radix）"}, {"id": 16, "zh": "天門冬", "en": "Asparagi Radix", "alt_en": "", "chapter": "第一章 補虛藥", "chapter_name": "補虛藥", "section": "第三節 補陰藥", "category": "補陰藥", "raw": "天門冬（Asparagi Radix）"}, {"id": 17, "zh": "知母", "en": "Anemarrhenae Rhizoma", "alt_en": "", "chapter": "第一章 補虛藥", "chapter_name": "補虛藥", "section": "第三節 補陰藥", "category": "補陰藥", "raw": "知母（Anemarrhenae Rhizoma）"}, {"id": 18, "zh": "石斛", "en": "Dendrobii Caulis", "alt_en": "", "chapter": "第一章 補虛藥", "chapter_name": "補虛藥", "section": "第三節 補陰藥", "category": "補陰藥", "raw": "石斛（Dendrobii Caulis）"}, {"id": 19, "zh": "女貞子", "en": "Ligustri Lucidi Fructus", "alt_en": "", "chapter": "第一章 補虛藥", "chapter_name": "補虛藥", "section": "第三節 補陰藥", "category": "補陰藥", "raw": "女貞子（Ligustri Lucidi Fructus）"}, {"id": 20, "zh": "黃精", "en": "Polygonati Rhizoma", "alt_en": "", "chapter": "第一章 補虛藥", "chapter_name": "補虛藥", "section": "第三節 補陰藥", "category": "補陰藥", "raw": "黃精（Polygonati Rhizoma）"}, {"id": 21, "zh": "百合", "en": "Lilii Bulbus", "alt_en": "", "chapter": "第一章 補虛藥", "chapter_name": "補虛藥", "section": "第三節 補陰藥", "category": "補陰藥", "raw": "百合（Lilii Bulbus）"}, {"id": 22, "zh": "龜板", "en": "Testudinis Carapax", "alt_en": "", "chapter": "第一章 補虛藥", "chapter_name": "補虛藥", "section": "第三節 補陰藥", "category": "補陰藥", "raw": "龜板（Testudinis Carapax）"}, {"id": 23, "zh": "楮實子", "en": "Broussonetiae Fructus", "alt_en": "", "chapter": "第一章 補虛藥", "chapter_name": "補虛藥", "section": "第三節 補陰藥", "category": "補陰藥", "raw": "楮實子（Broussonetiae Fructus）"}, {"id": 24, "zh": "巴戟天", "en": "Morindae Officinalis Radix", "alt_en": "GYNOCHTHODISI RADIX", "chapter": "第一章 補虛藥", "chapter_name": "補虛藥", "section": "第四節 補陽藥", "category": "補陽藥", "raw": "巴戟天（Morindae Officinalis Radix） (GYNOCHTHODISI RADIX)"}, {"id": 25, "zh": "肉蓯蓉", "en": "Cistanches Herba", "alt_en": "", "chapter": "第一章 補虛藥", "chapter_name": "補虛藥", "section": "第四節 補陽藥", "category": "補陽藥", "raw": "肉蓯蓉（Cistanches Herba）"}, {"id": 26, "zh": "淫羊藿", "en": "Epimedii Herba", "alt_en": "", "chapter": "第一章 補虛藥", "chapter_name": "補虛藥", "section": "第四節 補陽藥", "category": "補陽藥", "raw": "淫羊藿（Epimedii Herba）"}, {"id": 27, "zh": "沙苑子", "en": "Astragali Complanati Semen", "alt_en": "PHYLLOLOBII SEMEN", "chapter": "第一章 補虛藥", "chapter_name": "補虛藥", "section": "第四節 補陽藥", "category": "補陽藥", "raw": "沙苑子（Astragali Complanati Semen） (PHYLLOLOBII SEMEN)"}, {"id": 28, "zh": "杜仲", "en": "Eucommiae Cortex", "alt_en": "", "chapter": "第一章 補虛藥", "chapter_name": "補虛藥", "section": "第四節 補陽藥", "category": "補陽藥", "raw": "杜仲（Eucommiae Cortex）"}, {"id": 29, "zh": "鎖陽", "en": "Cynomorri Herba", "alt_en": "", "chapter": "第一章 補虛藥", "chapter_name": "補虛藥", "section": "第四節 補陽藥", "category": "補陽藥", "raw": "鎖陽（Cynomorri Herba）"}, {"id": 30, "zh": "續斷", "en": "Dipsaci Radix", "alt_en": "", "chapter": "第一章 補虛藥", "chapter_name": "補虛藥", "section": "第四節 補陽藥", "category": "補陽藥", "raw": "續斷（Dipsaci Radix）"}, {"id": 31, "zh": "補骨脂", "en": "Psoraleae Fructus", "alt_en": "", "chapter": "第一章 補虛藥", "chapter_name": "補虛藥", "section": "第四節 補陽藥", "category": "補陽藥", "raw": "補骨脂（Psoraleae Fructus）"}, {"id": 32, "zh": "菟絲子", "en": "Cuscutae Semen", "alt_en": "", "chapter": "第一章 補虛藥", "chapter_name": "補虛藥", "section": "第四節 補陽藥", "category": "補陽藥", "raw": "菟絲子（Cuscutae Semen）"}, {"id": 33, "zh": "冬蟲夏草", "en": "Cordyceps", "alt_en": "", "chapter": "第一章 補虛藥", "chapter_name": "補虛藥", "section": "第四節 補陽藥", "category": "補陽藥", "raw": "冬蟲夏草（Cordyceps）"}, {"id": 34, "zh": "鹿茸", "en": "Cervi Cornu Pantotrichum", "alt_en": "", "chapter": "第一章 補虛藥", "chapter_name": "補虛藥", "section": "第四節 補陽藥", "category": "補陽藥", "raw": "鹿茸（Cervi Cornu Pantotrichum）"}, {"id": 35, "zh": "附子", "en": "Aconiti Lateralis Radix", "alt_en": "", "chapter": "第二章 溫裏藥", "chapter_name": "溫裏藥", "section": "", "category": "溫裏藥", "raw": "附子（Aconiti Lateralis Radix）"}, {"id": 36, "zh": "肉桂", "en": "Cinnamomi Cortex", "alt_en": "", "chapter": "第二章 溫裏藥", "chapter_name": "溫裏藥", "section": "", "category": "溫裏藥", "raw": "肉桂（Cinnamomi Cortex）"}, {"id": 37, "zh": "吳茱萸", "en": "Euodiae Fructus", "alt_en": "TETRADII RUTICARPI FRUCTUS", "chapter": "第二章 溫裏藥", "chapter_name": "溫裏藥", "section": "", "category": "溫裏藥", "raw": "吳茱萸（Euodiae Fructus） (TETRADII RUTICARPI FRUCTUS)"}, {"id": 38, "zh": "小茴香", "en": "Foeniculi Fructus", "alt_en": "", "chapter": "第二章 溫裏藥", "chapter_name": "溫裏藥", "section": "", "category": "溫裏藥", "raw": "小茴香（Foeniculi Fructus）"}, {"id": 39, "zh": "細辛", "en": "Asari Radix", "alt_en": "", "chapter": "第二章 溫裏藥", "chapter_name": "溫裏藥", "section": "", "category": "溫裏藥", "raw": "細辛（Asari Radix）"}, {"id": 40, "zh": "丁香", "en": "Caryophylli Flos", "alt_en": "", "chapter": "第二章 溫裏藥", "chapter_name": "溫裏藥", "section": "", "category": "溫裏藥", "raw": "丁香（Caryophylli Flos）"}, {"id": 41, "zh": "高良薑", "en": "Alpiniae Officinarum Rhizoma", "alt_en": "", "chapter": "第二章 溫裏藥", "chapter_name": "溫裏藥", "section": "", "category": "溫裏藥", "raw": "高良薑（Alpiniae Officinarum Rhizoma）"}, {"id": 42, "zh": "炮薑", "en": "Zingiberis Rhizoma Praeparatum", "alt_en": "", "chapter": "第二章 溫裏藥", "chapter_name": "溫裏藥", "section": "", "category": "溫裏藥", "raw": "炮薑（Zingiberis Rhizoma Praeparatum）"}, {"id": 43, "zh": "烏藥", "en": "Linderae Radix", "alt_en": "", "chapter": "第三章 理氣藥", "chapter_name": "理氣藥", "section": "", "category": "理氣藥", "raw": "烏藥（Linderae Radix）"}, {"id": 44, "zh": "香附", "en": "Cyperi Rhizoma", "alt_en": "", "chapter": "第三章 理氣藥", "chapter_name": "理氣藥", "section": "", "category": "理氣藥", "raw": "香附（Cyperi Rhizoma）"}, {"id": 45, "zh": "枳殼", "en": "Citri Fructus Immaturus", "alt_en": "", "chapter": "第三章 理氣藥", "chapter_name": "理氣藥", "section": "", "category": "理氣藥", "raw": "枳殼（Citri Fructus Immaturus）"}, {"id": 46, "zh": "枳實", "en": "Aurantii Fructus Immaturus", "alt_en": "", "chapter": "第三章 理氣藥", "chapter_name": "理氣藥", "section": "", "category": "理氣藥", "raw": "枳實（Aurantii Fructus Immaturus）"}, {"id": 47, "zh": "沉香", "en": "Aquilariae Lignum Resinatum", "alt_en": "", "chapter": "第三章 理氣藥", "chapter_name": "理氣藥", "section": "", "category": "理氣藥", "raw": "沉香（Aquilariae Lignum Resinatum）"}, {"id": 48, "zh": "陳皮", "en": "Citri Reticulatae Pericarpium", "alt_en": "ITRI RETICULATAE PERICARPIUM VETUM", "chapter": "第三章 理氣藥", "chapter_name": "理氣藥", "section": "", "category": "理氣藥", "raw": "陳皮（Citri Reticulatae Pericarpium） (ITRI RETICULATAE PERICARPIUM VETUM)"}, {"id": 49, "zh": "鉤藤", "en": "Uncariae Ramulus cum Uncis", "alt_en": "", "chapter": "第四章 平肝息風藥", "chapter_name": "平肝息風藥", "section": "", "category": "平肝息風藥", "raw": "鉤藤（Uncariae Ramulus cum Uncis）"}, {"id": 50, "zh": "天麻", "en": "Gastrodiae Rhizoma", "alt_en": "GASTRODIAE TUBER", "chapter": "第四章 平肝息風藥", "chapter_name": "平肝息風藥", "section": "", "category": "平肝息風藥", "raw": "天麻（Gastrodiae Rhizoma） (GASTRODIAE TUBER)"}, {"id": 51, "zh": "白殭蠶", "en": "Bombyx Batryticatus", "alt_en": "", "chapter": "第四章 平肝息風藥", "chapter_name": "平肝息風藥", "section": "", "category": "平肝息風藥", "raw": "白殭蠶（Bombyx Batryticatus）"}, {"id": 52, "zh": "酸棗仁", "en": "Zizyphi Spinosae Semen", "alt_en": "", "chapter": "第五章 安神藥", "chapter_name": "安神藥", "section": "", "category": "安神藥", "raw": "酸棗仁（Zizyphi Spinosae Semen）"}, {"id": 53, "zh": "柏子仁", "en": "Platycladi Semen", "alt_en": "", "chapter": "第五章 安神藥", "chapter_name": "安神藥", "section": "", "category": "安神藥", "raw": "柏子仁（Platycladi Semen）"}, {"id": 54, "zh": "遠志", "en": "Polygalae Radix", "alt_en": "", "chapter": "第五章 安神藥", "chapter_name": "安神藥", "section": "", "category": "安神藥", "raw": "遠志（Polygalae Radix）"}, {"id": 55, "zh": "蓮子", "en": "Nelumbinis Semen", "alt_en": "", "chapter": "第六章 收澀藥", "chapter_name": "收澀藥", "section": "", "category": "收澀藥", "raw": "蓮子（Nelumbinis Semen）"}, {"id": 56, "zh": "芡實", "en": "Euryale Semen", "alt_en": "EURYALIS SEMEN", "chapter": "第六章 收澀藥", "chapter_name": "收澀藥", "section": "", "category": "收澀藥", "raw": "芡實（Euryale Semen） (EURYALIS SEMEN)"}, {"id": 57, "zh": "五味子", "en": "Schisandrae Fructus", "alt_en": "", "chapter": "第六章 收澀藥", "chapter_name": "收澀藥", "section": "", "category": "收澀藥", "raw": "五味子（Schisandrae Fructus）"}, {"id": 58, "zh": "山茱萸", "en": "Corni Sarcocarpium", "alt_en": "", "chapter": "第六章 收澀藥", "chapter_name": "收澀藥", "section": "", "category": "收澀藥", "raw": "山茱萸（Corni Sarcocarpium）"}, {"id": 59, "zh": "訶子", "en": "Chebulae Fructus", "alt_en": "", "chapter": "第六章 收澀藥", "chapter_name": "收澀藥", "section": "", "category": "收澀藥", "raw": "訶子（Chebulae Fructus）"}, {"id": 60, "zh": "覆盆子", "en": "Rubi Fructus", "alt_en": "RUBI FRUCTUS IMMATURUS", "chapter": "第六章 收澀藥", "chapter_name": "收澀藥", "section": "", "category": "收澀藥", "raw": "覆盆子（Rubi Fructus） (RUBI FRUCTUS IMMATURUS)"}, {"id": 61, "zh": "麻黃", "en": "Ephedrae Herba", "alt_en": "", "chapter": "第七章 解表藥", "chapter_name": "解表藥", "section": "第一節 辛溫解表藥", "category": "辛溫解表藥", "raw": "麻黃（Ephedrae Herba）"}, {"id": 62, "zh": "辛夷", "en": "Magnoliae Flos", "alt_en": "", "chapter": "第七章 解表藥", "chapter_name": "解表藥", "section": "第一節 辛溫解表藥", "category": "辛溫解表藥", "raw": "辛夷（Magnoliae Flos）"}, {"id": 63, "zh": "白芷", "en": "Angelicae Dahuricae Radix", "alt_en": "", "chapter": "第七章 解表藥", "chapter_name": "解表藥", "section": "第一節 辛溫解表藥", "category": "辛溫解表藥", "raw": "白芷（Angelicae Dahuricae Radix）"}, {"id": 64, "zh": "蒼耳子", "en": "Xanthii Fructus", "alt_en": "", "chapter": "第七章 解表藥", "chapter_name": "解表藥", "section": "第一節 辛溫解表藥", "category": "辛溫解表藥", "raw": "蒼耳子（Xanthii Fructus）"}, {"id": 65, "zh": "防風", "en": "Saposhnikoviae Radix", "alt_en": "SAPOSHNIKOVIAE RADIX ET RHIZOMA", "chapter": "第七章 解表藥", "chapter_name": "解表藥", "section": "第一節 辛溫解表藥", "category": "辛溫解表藥", "raw": "防風（Saposhnikoviae Radix） (SAPOSHNIKOVIAE RADIX ET RHIZOMA)"}, {"id": 66, "zh": "羌活", "en": "Notopterygii Rhizoma et Radix", "alt_en": "", "chapter": "第七章 解表藥", "chapter_name": "解表藥", "section": "第一節 辛溫解表藥", "category": "辛溫解表藥", "raw": "羌活（Notopterygii Rhizoma et Radix）"}, {"id": 67, "zh": "荊芥", "en": "Nepetae Herba", "alt_en": "", "chapter": "第七章 解表藥", "chapter_name": "解表藥", "section": "第一節 辛溫解表藥", "category": "辛溫解表藥", "raw": "荊芥（Nepetae Herba）"}, {"id": 68, "zh": "紫蘇葉", "en": "Perillae Folium", "alt_en": "", "chapter": "第七章 解表藥", "chapter_name": "解表藥", "section": "第一節 辛溫解表藥", "category": "辛溫解表藥", "raw": "紫蘇葉（Perillae Folium）"}, {"id": 69, "zh": "生薑", "en": "Zingiberis Rhizoma", "alt_en": "ZINGIBERIS RHIZOMA RECENS", "chapter": "第七章 解表藥", "chapter_name": "解表藥", "section": "第一節 辛溫解表藥", "category": "辛溫解表藥", "raw": "生薑（Zingiberis Rhizoma） (ZINGIBERIS RHIZOMA RECENS)"}, {"id": 70, "zh": "蔥白", "en": "Allii Fistulosi Bulbus", "alt_en": "", "chapter": "第七章 解表藥", "chapter_name": "解表藥", "section": "第一節 辛溫解表藥", "category": "辛溫解表藥", "raw": "蔥白（Allii Fistulosi Bulbus）"}, {"id": 71, "zh": "柴胡", "en": "Bupleuri Radix", "alt_en": "BUPLEURI RADIX ET RHIZOMA", "chapter": "第七章 解表藥", "chapter_name": "解表藥", "section": "第二節 辛涼解表藥", "category": "辛涼解表藥", "raw": "柴胡（Bupleuri Radix） (BUPLEURI RADIX ET RHIZOMA)"}, {"id": 72, "zh": "葛根", "en": "Puerariae Radix", "alt_en": "", "chapter": "第七章 解表藥", "chapter_name": "解表藥", "section": "第二節 辛涼解表藥", "category": "辛涼解表藥", "raw": "葛根（Puerariae Radix）"}, {"id": 73, "zh": "菊花", "en": "Chrysanthemi Flos", "alt_en": "", "chapter": "第七章 解表藥", "chapter_name": "解表藥", "section": "第二節 辛涼解表藥", "category": "辛涼解表藥", "raw": "菊花（Chrysanthemi Flos）"}, {"id": 74, "zh": "薄荷", "en": "Menthae Herba", "alt_en": "", "chapter": "第七章 解表藥", "chapter_name": "解表藥", "section": "第二節 辛涼解表藥", "category": "辛涼解表藥", "raw": "薄荷（Menthae Herba）"}, {"id": 75, "zh": "牛蒡子", "en": "Arctii Fructus", "alt_en": "", "chapter": "第七章 解表藥", "chapter_name": "解表藥", "section": "第二節 辛涼解表藥", "category": "辛涼解表藥", "raw": "牛蒡子（Arctii Fructus）"}, {"id": 76, "zh": "蔓荊子", "en": "Viticis Fructus", "alt_en": "", "chapter": "第七章 解表藥", "chapter_name": "解表藥", "section": "第二節 辛涼解表藥", "category": "辛涼解表藥", "raw": "蔓荊子（Viticis Fructus）"}, {"id": 77, "zh": "升麻", "en": "Cimicifugae Rhizoma", "alt_en": "", "chapter": "第七章 解表藥", "chapter_name": "解表藥", "section": "第二節 辛涼解表藥", "category": "辛涼解表藥", "raw": "升麻（Cimicifugae Rhizoma）"}, {"id": 78, "zh": "淡豆豉", "en": "Sojae Semen Praeparatum", "alt_en": "", "chapter": "第七章 解表藥", "chapter_name": "解表藥", "section": "第二節 辛涼解表藥", "category": "辛涼解表藥", "raw": "淡豆豉（Sojae Semen Praeparatum）"}, {"id": 79, "zh": "半夏", "en": "Pinelliae Rhizoma", "alt_en": "", "chapter": "第八章 化痰 止咳平喘藥", "chapter_name": "化痰 止咳平喘藥", "section": "第一節 化痰藥", "category": "化痰藥", "raw": "半夏（Pinelliae Rhizoma）"}, {"id": 80, "zh": "貝母", "en": "Fritillariae Bulbus", "alt_en": "", "chapter": "第八章 化痰 止咳平喘藥", "chapter_name": "化痰 止咳平喘藥", "section": "第一節 化痰藥", "category": "化痰藥", "raw": "貝母（Fritillariae Bulbus）"}, {"id": 81, "zh": "桔梗", "en": "Platycodonis Radix", "alt_en": "", "chapter": "第八章 化痰 止咳平喘藥", "chapter_name": "化痰 止咳平喘藥", "section": "第一節 化痰藥", "category": "化痰藥", "raw": "桔梗（Platycodonis Radix）"}, {"id": 82, "zh": "皂莢", "en": "Gleditsiae Fructus", "alt_en": "", "chapter": "第八章 化痰 止咳平喘藥", "chapter_name": "化痰 止咳平喘藥", "section": "第一節 化痰藥", "category": "化痰藥", "raw": "皂莢（Gleditsiae Fructus）"}, {"id": 83, "zh": "皂角刺", "en": "Gleditsiae Spina", "alt_en": "", "chapter": "第八章 化痰 止咳平喘藥", "chapter_name": "化痰 止咳平喘藥", "section": "第一節 化痰藥", "category": "化痰藥", "raw": "皂角刺 （Gleditsiae Spina）"}, {"id": 84, "zh": "旋覆花", "en": "Inulae Flos", "alt_en": "PENTANEMAE ET INULAE FLOS", "chapter": "第八章 化痰 止咳平喘藥", "chapter_name": "化痰 止咳平喘藥", "section": "第一節 化痰藥", "category": "化痰藥", "raw": "旋覆花（Inulae Flos） (PENTANEMAE ET INULAE FLOS)"}, {"id": 85, "zh": "萊菔子", "en": "Raphani Semen", "alt_en": "", "chapter": "第八章 化痰 止咳平喘藥", "chapter_name": "化痰 止咳平喘藥", "section": "第一節 化痰藥", "category": "化痰藥", "raw": "萊菔子（Raphani Semen）"}, {"id": 86, "zh": "前胡", "en": "Peucedani Radix", "alt_en": "", "chapter": "第八章 化痰 止咳平喘藥", "chapter_name": "化痰 止咳平喘藥", "section": "第一節 化痰藥", "category": "化痰藥", "raw": "前胡（Peucedani Radix）"}, {"id": 87, "zh": "竹茹", "en": "Bambusae Caulis In Taenias", "alt_en": "", "chapter": "第八章 化痰 止咳平喘藥", "chapter_name": "化痰 止咳平喘藥", "section": "第一節 化痰藥", "category": "化痰藥", "raw": "竹茹（Bambusae Caulis In Taenias）"}, {"id": 88, "zh": "胖大海", "en": "Sterculiae Lychnophorae Semen", "alt_en": "SCAPHII SEMEN", "chapter": "第八章 化痰 止咳平喘藥", "chapter_name": "化痰 止咳平喘藥", "section": "第一節 化痰藥", "category": "化痰藥", "raw": "胖大海（Sterculiae Lychnophorae Semen） (SCAPHII SEMEN)"}, {"id": 89, "zh": "昆布", "en": "Laminariae Thallus", "alt_en": "Eckloniae Thallus", "chapter": "第八章 化痰 止咳平喘藥", "chapter_name": "化痰 止咳平喘藥", "section": "第一節 化痰藥", "category": "化痰藥", "raw": "昆布（Laminariae Thallus）（Eckloniae Thallus）"}, {"id": 90, "zh": "白果", "en": "Ginkgo Semen", "alt_en": "", "chapter": "第八章 化痰 止咳平喘藥", "chapter_name": "化痰 止咳平喘藥", "section": "第二節 止咳平喘藥", "category": "止咳平喘藥", "raw": "白果（Ginkgo Semen）"}, {"id": 91, "zh": "苦杏仁", "en": "ARMENIACAE SEMEN AMARUM", "alt_en": "", "chapter": "第八章 化痰 止咳平喘藥", "chapter_name": "化痰 止咳平喘藥", "section": "第二節 止咳平喘藥", "category": "止咳平喘藥", "raw": "苦杏仁（ARMENIACAE SEMEN AMARUM）"}, {"id": 92, "zh": "桑白皮", "en": "Mori Radicis Cortex", "alt_en": "", "chapter": "第八章 化痰 止咳平喘藥", "chapter_name": "化痰 止咳平喘藥", "section": "第二節 止咳平喘藥", "category": "止咳平喘藥", "raw": "桑白皮（Mori Radicis Cortex）"}, {"id": 93, "zh": "枇杷葉", "en": "Eriobotryae Folium", "alt_en": "", "chapter": "第八章 化痰 止咳平喘藥", "chapter_name": "化痰 止咳平喘藥", "section": "第二節 止咳平喘藥", "category": "止咳平喘藥", "raw": "枇杷葉（Eriobotryae Folium）"}, {"id": 94, "zh": "紫苑", "en": "Asteris Radix et Rhizoma", "alt_en": "", "chapter": "第八章 化痰 止咳平喘藥", "chapter_name": "化痰 止咳平喘藥", "section": "第二節 止咳平喘藥", "category": "止咳平喘藥", "raw": "紫苑（Asteris Radix et Rhizoma）"}, {"id": 95, "zh": "百部", "en": "Stemonae Radix", "alt_en": "", "chapter": "第八章 化痰 止咳平喘藥", "chapter_name": "化痰 止咳平喘藥", "section": "第二節 止咳平喘藥", "category": "止咳平喘藥", "raw": "百部（Stemonae Radix）"}, {"id": 96, "zh": "茯苓", "en": "Poria", "alt_en": "", "chapter": "第九章 利水滲濕藥", "chapter_name": "利水滲濕藥", "section": "", "category": "利水滲濕藥", "raw": "茯苓（Poria）"}, {"id": 97, "zh": "豬苓", "en": "Polyporus", "alt_en": "", "chapter": "第九章 利水滲濕藥", "chapter_name": "利水滲濕藥", "section": "", "category": "利水滲濕藥", "raw": "豬苓（Polyporus）"}, {"id": 98, "zh": "白朮", "en": "Atractylodis Macrocephalae Rhizoma", "alt_en": "", "chapter": "第九章 利水滲濕藥", "chapter_name": "利水滲濕藥", "section": "", "category": "利水滲濕藥", "raw": "白朮（Atractylodis Macrocephalae Rhizoma）"}, {"id": 99, "zh": "車前子", "en": "Plantaginis Semen", "alt_en": "", "chapter": "第九章 利水滲濕藥", "chapter_name": "利水滲濕藥", "section": "", "category": "利水滲濕藥", "raw": "車前子（Plantaginis Semen）"}, {"id": 100, "zh": "木通", "en": "Akebiae Caulis", "alt_en": "", "chapter": "第九章 利水滲濕藥", "chapter_name": "利水滲濕藥", "section": "", "category": "利水滲濕藥", "raw": "木通（Akebiae Caulis）"}, {"id": 101, "zh": "（粉）萆薢", "en": "Dioscoreae Hypoglaucae Rhizoma", "alt_en": "", "chapter": "第九章 利水滲濕藥", "chapter_name": "利水滲濕藥", "section": "", "category": "利水滲濕藥", "raw": "（粉）萆薢（Dioscoreae Hypoglaucae Rhizoma）"}, {"id": 102, "zh": "萹蓄", "en": "Polygoni Avicularis Herba", "alt_en": "", "chapter": "第九章 利水滲濕藥", "chapter_name": "利水滲濕藥", "section": "", "category": "利水滲濕藥", "raw": "萹蓄（Polygoni Avicularis Herba）"}, {"id": 103, "zh": "澤瀉", "en": "Alismatis Rhizoma", "alt_en": "ALISMATIS TUBER", "chapter": "第九章 利水滲濕藥", "chapter_name": "利水滲濕藥", "section": "", "category": "利水滲濕藥", "raw": "澤瀉（Alismatis Rhizoma） (ALISMATIS TUBER)"}, {"id": 104, "zh": "燈心草", "en": "Junci Medulla", "alt_en": "", "chapter": "第九章 利水滲濕藥", "chapter_name": "利水滲濕藥", "section": "", "category": "利水滲濕藥", "raw": "燈心草（Junci Medulla）"}, {"id": 105, "zh": "瞿麥", "en": "Dianthi Herba", "alt_en": "", "chapter": "第九章 利水滲濕藥", "chapter_name": "利水滲濕藥", "section": "", "category": "利水滲濕藥", "raw": "瞿麥（Dianthi Herba）"}, {"id": 106, "zh": "蒼朮", "en": "Atractylodis Rhizoma", "alt_en": "", "chapter": "第十章 芳香化濕藥", "chapter_name": "芳香化濕藥", "section": "", "category": "芳香化濕藥", "raw": "蒼朮（Atractylodis Rhizoma）"}, {"id": 107, "zh": "厚朴", "en": "Magnoliae Cortex", "alt_en": "", "chapter": "第十章 芳香化濕藥", "chapter_name": "芳香化濕藥", "section": "", "category": "芳香化濕藥", "raw": "厚朴（Magnoliae Cortex）"}, {"id": 108, "zh": "廣藿香", "en": "Pogostemonis Herba", "alt_en": "", "chapter": "第十章 芳香化濕藥", "chapter_name": "芳香化濕藥", "section": "", "category": "芳香化濕藥", "raw": "廣藿香（Pogostemonis Herba）"}, {"id": 109, "zh": "砂仁", "en": "Amomi Fructus", "alt_en": "", "chapter": "第十章 芳香化濕藥", "chapter_name": "芳香化濕藥", "section": "", "category": "芳香化濕藥", "raw": "砂仁（Amomi Fructus）"}, {"id": 110, "zh": "威靈仙", "en": "Clematidis Radix et Rhizoma", "alt_en": "", "chapter": "第十一章 袪風濕藥", "chapter_name": "袪風濕藥", "section": "", "category": "袪風濕藥", "raw": "威靈仙（Clematidis Radix et Rhizoma）"}, {"id": 111, "zh": "桑寄生", "en": "Taxilli Herba", "alt_en": "", "chapter": "第十一章 袪風濕藥", "chapter_name": "袪風濕藥", "section": "", "category": "袪風濕藥", "raw": "桑寄生（Taxilli Herba）"}, {"id": 112, "zh": "獨活", "en": "Angelicae Pubescentis Radix", "alt_en": "ANGELICAE BISERRATAE RADIX", "chapter": "第十一章 袪風濕藥", "chapter_name": "袪風濕藥", "section": "", "category": "袪風濕藥", "raw": "獨活（Angelicae Pubescentis Radix） (ANGELICAE BISERRATAE RADIX)"}, {"id": 113, "zh": "秦艽", "en": "Gentianae Macrophyllae Radix", "alt_en": "", "chapter": "第十一章 袪風濕藥", "chapter_name": "袪風濕藥", "section": "", "category": "袪風濕藥", "raw": "秦艽（Gentianae Macrophyllae Radix）"}, {"id": 114, "zh": "五加皮", "en": "Acanthopanacis Radicis Cortex", "alt_en": "ELEUTHEROCOCCI RADICIS CORTEX", "chapter": "第十一章 袪風濕藥", "chapter_name": "袪風濕藥", "section": "", "category": "袪風濕藥", "raw": "五加皮（Acanthopanacis Radicis Cortex） (ELEUTHEROCOCCI RADICIS CORTEX)"}, {"id": 115, "zh": "山楂", "en": "Crataegi Fructus", "alt_en": "", "chapter": "第十二章 消食藥", "chapter_name": "消食藥", "section": "", "category": "消食藥", "raw": "山楂（Crataegi Fructus）"}, {"id": 116, "zh": "神麴", "en": "Massa Medicata Fermentata", "alt_en": "", "chapter": "第十二章 消食藥", "chapter_name": "消食藥", "section": "", "category": "消食藥", "raw": "神麴（Massa Medicata Fermentata）"}, {"id": 117, "zh": "麥芽", "en": "Hordei Fructus Germinatus", "alt_en": "", "chapter": "第十二章 消食藥", "chapter_name": "消食藥", "section": "", "category": "消食藥", "raw": "麥芽（Hordei Fructus Germinatus）"}, {"id": 118, "zh": "穀牙", "en": "Oryzae Fructus Germinatus", "alt_en": "", "chapter": "第十二章 消食藥", "chapter_name": "消食藥", "section": "", "category": "消食藥", "raw": "穀牙（Oryzae Fructus Germinatus）"}, {"id": 119, "zh": "大黃", "en": "Rhei Radix et Rhizoma", "alt_en": "", "chapter": "第十三章 瀉下藥", "chapter_name": "瀉下藥", "section": "第一節 攻下藥", "category": "攻下藥", "raw": "大黃（Rhei Radix et Rhizoma）"}, {"id": 120, "zh": "蘆薈", "en": "Aloe", "alt_en": "", "chapter": "第十三章 瀉下藥", "chapter_name": "瀉下藥", "section": "第一節 攻下藥", "category": "攻下藥", "raw": "蘆薈（Aloe）"}, {"id": 121, "zh": "火麻仁", "en": "Cannabis Fructus", "alt_en": "", "chapter": "第十三章 瀉下藥", "chapter_name": "瀉下藥", "section": "第二節 潤下藥", "category": "潤下藥", "raw": "火麻仁（Cannabis Fructus）"}, {"id": 122, "zh": "丹參", "en": "Salviae Miltiorrhizae Radix et Rhizoma", "alt_en": "", "chapter": "第十四章 活血袪瘀藥", "chapter_name": "活血袪瘀藥", "section": "", "category": "活血袪瘀藥", "raw": "丹參（Salviae Miltiorrhizae Radix et Rhizoma）"}, {"id": 123, "zh": "桃仁", "en": "Persicae Semen", "alt_en": "", "chapter": "第十四章 活血袪瘀藥", "chapter_name": "活血袪瘀藥", "section": "", "category": "活血袪瘀藥", "raw": "桃仁（Persicae Semen）"}, {"id": 124, "zh": "紅花", "en": "Carthami Flos", "alt_en": "", "chapter": "第十四章 活血袪瘀藥", "chapter_name": "活血袪瘀藥", "section": "", "category": "活血袪瘀藥", "raw": "紅花（Carthami Flos）"}, {"id": 125, "zh": "延胡索", "en": "Corydalis Rhizoma", "alt_en": "CORYDALIS TUBER", "chapter": "第十四章 活血袪瘀藥", "chapter_name": "活血袪瘀藥", "section": "", "category": "活血袪瘀藥", "raw": "延胡索（Corydalis Rhizoma） (CORYDALIS TUBER)"}, {"id": 126, "zh": "蘇木", "en": "Sappan Lignum", "alt_en": "", "chapter": "第十四章 活血袪瘀藥", "chapter_name": "活血袪瘀藥", "section": "", "category": "活血袪瘀藥", "raw": "蘇木（Sappan Lignum）"}, {"id": 127, "zh": "川芎", "en": "Chuanxiong Rhizoma", "alt_en": "", "chapter": "第十四章 活血袪瘀藥", "chapter_name": "活血袪瘀藥", "section": "", "category": "活血袪瘀藥", "raw": "川芎（Chuanxiong Rhizoma）"}, {"id": 128, "zh": "薑黃", "en": "Curcumae Longae Rhizoma", "alt_en": "", "chapter": "第十四章 活血袪瘀藥", "chapter_name": "活血袪瘀藥", "section": "", "category": "活血袪瘀藥", "raw": "薑黃（Curcumae Longae Rhizoma）"}, {"id": 129, "zh": "益母草", "en": "Leonuri Herba", "alt_en": "", "chapter": "第十四章 活血袪瘀藥", "chapter_name": "活血袪瘀藥", "section": "", "category": "活血袪瘀藥", "raw": "益母草（Leonuri Herba）"}, {"id": 130, "zh": "牛膝", "en": "Achyranthis Bidentatae Radix", "alt_en": "", "chapter": "第十四章 活血袪瘀藥", "chapter_name": "活血袪瘀藥", "section": "", "category": "活血袪瘀藥", "raw": "牛膝（Achyranthis Bidentatae Radix）"}, {"id": 131, "zh": "乳香", "en": "Olibanum", "alt_en": "", "chapter": "第十四章 活血袪瘀藥", "chapter_name": "活血袪瘀藥", "section": "", "category": "活血袪瘀藥", "raw": "乳香（Olibanum）"}, {"id": 132, "zh": "血竭", "en": "Draconis Sanguis", "alt_en": "", "chapter": "第十四章 活血袪瘀藥", "chapter_name": "活血袪瘀藥", "section": "", "category": "活血袪瘀藥", "raw": "血竭（Draconis Sanguis）"}, {"id": 133, "zh": "水蛭", "en": "Hirudo", "alt_en": "", "chapter": "第十四章 活血袪瘀藥", "chapter_name": "活血袪瘀藥", "section": "", "category": "活血袪瘀藥", "raw": "水蛭（Hirudo）"}, {"id": 134, "zh": "白及", "en": "Bletillae Rhizoma", "alt_en": "BLETILLAE TUBER", "chapter": "第十五章 止血藥", "chapter_name": "止血藥", "section": "", "category": "止血藥", "raw": "白及（Bletillae Rhizoma） (BLETILLAE TUBER)"}, {"id": 135, "zh": "艾葉", "en": "Artemisiae Argyi Folium", "alt_en": "", "chapter": "第十五章 止血藥", "chapter_name": "止血藥", "section": "", "category": "止血藥", "raw": "艾葉（Artemisiae Argyi Folium）"}, {"id": 136, "zh": "槐花", "en": "Sophorae Flos et Flos Immaturus", "alt_en": "", "chapter": "第十五章 止血藥", "chapter_name": "止血藥", "section": "", "category": "止血藥", "raw": "槐花（Sophorae Flos et Flos Immaturus）"}, {"id": 137, "zh": "側柏葉", "en": "Platycladi Cacumen", "alt_en": "", "chapter": "第十五章 止血藥", "chapter_name": "止血藥", "section": "", "category": "止血藥", "raw": "側柏葉（Platycladi Cacumen）"}, {"id": 138, "zh": "三七", "en": "Notoginseng Radix et Rhizoma", "alt_en": "", "chapter": "第十五章 止血藥", "chapter_name": "止血藥", "section": "", "category": "止血藥", "raw": "三七（Notoginseng Radix et Rhizoma）"}, {"id": 139, "zh": "金銀花", "en": "Lonicerae Japonicae Flos", "alt_en": "", "chapter": "第十六章 清熱藥", "chapter_name": "清熱藥", "section": "第一節 清熱解毒藥", "category": "清熱解毒藥", "raw": "金銀花（Lonicerae Japonicae Flos）"}, {"id": 140, "zh": "連翹", "en": "Forsythiae Fructus", "alt_en": "", "chapter": "第十六章 清熱藥", "chapter_name": "清熱藥", "section": "第一節 清熱解毒藥", "category": "清熱解毒藥", "raw": "連翹（Forsythiae Fructus）"}, {"id": 141, "zh": "蒲公英", "en": "Taraxaci Herba", "alt_en": "", "chapter": "第十六章 清熱藥", "chapter_name": "清熱藥", "section": "第一節 清熱解毒藥", "category": "清熱解毒藥", "raw": "蒲公英（Taraxaci Herba）"}, {"id": 142, "zh": "北板藍根", "en": "Isatidis Radix", "alt_en": "", "chapter": "第十六章 清熱藥", "chapter_name": "清熱藥", "section": "第一節 清熱解毒藥", "category": "清熱解毒藥", "raw": "北板藍根（Isatidis Radix）"}, {"id": 143, "zh": "山豆根", "en": "Sophorae Tonkinensis Radix", "alt_en": "", "chapter": "第十六章 清熱藥", "chapter_name": "清熱藥", "section": "第一節 清熱解毒藥", "category": "清熱解毒藥", "raw": "山豆根（Sophorae Tonkinensis Radix）"}, {"id": 144, "zh": "敗醬草", "en": "Patriniae Herba", "alt_en": "", "chapter": "第十六章 清熱藥", "chapter_name": "清熱藥", "section": "第一節 清熱解毒藥", "category": "清熱解毒藥", "raw": "敗醬草（Patriniae Herba）"}, {"id": 145, "zh": "射干", "en": "Blelamcandae Rhizoma", "alt_en": "IRIDIS DOMESTICAE RHIZOMA", "chapter": "第十六章 清熱藥", "chapter_name": "清熱藥", "section": "第一節 清熱解毒藥", "category": "清熱解毒藥", "raw": "射干（Blelamcandae Rhizoma） (IRIDIS DOMESTICAE RHIZOMA)"}, {"id": 146, "zh": "梔子", "en": "Gardeniae Fructus", "alt_en": "", "chapter": "第十六章 清熱藥", "chapter_name": "清熱藥", "section": "第二節 清熱瀉火藥", "category": "清熱瀉火藥", "raw": "梔子（Gardeniae Fructus）"}, {"id": 147, "zh": "夏枯草", "en": "Prunellae Spica", "alt_en": "", "chapter": "第十六章 清熱藥", "chapter_name": "清熱藥", "section": "第二節 清熱瀉火藥", "category": "清熱瀉火藥", "raw": "夏枯草（Prunellae Spica）"}, {"id": 148, "zh": "栝樓根", "en": "Trichosanthis Radix", "alt_en": "", "chapter": "第十六章 清熱藥", "chapter_name": "清熱藥", "section": "第二節 清熱瀉火藥", "category": "清熱瀉火藥", "raw": "栝樓根（Trichosanthis Radix）"}, {"id": 149, "zh": "蘆根", "en": "Phragmitis Rhizoma", "alt_en": "", "chapter": "第十六章 清熱藥", "chapter_name": "清熱藥", "section": "第二節 清熱瀉火藥", "category": "清熱瀉火藥", "raw": "蘆根（Phragmitis Rhizoma）"}, {"id": 150, "zh": "淡竹葉", "en": "Lophatheri Herba", "alt_en": "", "chapter": "第十六章 清熱藥", "chapter_name": "清熱藥", "section": "第二節 清熱瀉火藥", "category": "清熱瀉火藥", "raw": "淡竹葉（Lophatheri Herba）"}, {"id": 151, "zh": "黃連", "en": "Coptidis Rhizoma", "alt_en": "", "chapter": "第十六章 清熱藥", "chapter_name": "清熱藥", "section": "第三節 清熱燥濕藥", "category": "清熱燥濕藥", "raw": "黃連（Coptidis Rhizoma）"}, {"id": 152, "zh": "黃芩", "en": "Scutellariae Radix", "alt_en": "", "chapter": "第十六章 清熱藥", "chapter_name": "清熱藥", "section": "第三節 清熱燥濕藥", "category": "清熱燥濕藥", "raw": "黃芩（Scutellariae Radix）"}, {"id": 153, "zh": "黃柏（黃蘗）", "en": "Phellodendri Cortex", "alt_en": "", "chapter": "第十六章 清熱藥", "chapter_name": "清熱藥", "section": "第三節 清熱燥濕藥", "category": "清熱燥濕藥", "raw": "黃柏（黃蘗）（Phellodendri Cortex）"}, {"id": 154, "zh": "龍膽", "en": "Gentianae Radix et Rhizoma", "alt_en": "", "chapter": "第十六章 清熱藥", "chapter_name": "清熱藥", "section": "第三節 清熱燥濕藥", "category": "清熱燥濕藥", "raw": "龍膽（Gentianae Radix et Rhizoma）"}, {"id": 155, "zh": "苦參", "en": "Sophorae Flavescentis Radix", "alt_en": "", "chapter": "第十六章 清熱藥", "chapter_name": "清熱藥", "section": "第三節 清熱燥濕藥", "category": "清熱燥濕藥", "raw": "苦參（Sophorae Flavescentis Radix）"}, {"id": 156, "zh": "玄參", "en": "Scrophulariae Radix", "alt_en": "", "chapter": "第十六章 清熱藥", "chapter_name": "清熱藥", "section": "第四節 清熱涼血藥", "category": "清熱涼血藥", "raw": "玄參（Scrophulariae Radix）"}, {"id": 157, "zh": "牡丹皮", "en": "Moutan Radicis Cortex", "alt_en": "", "chapter": "第十六章 清熱藥", "chapter_name": "清熱藥", "section": "第四節 清熱涼血藥", "category": "清熱涼血藥", "raw": "牡丹皮（Moutan Radicis Cortex）"}, {"id": 158, "zh": "紫草", "en": "Lithospermi Radix", "alt_en": "Arnebiae Radix", "chapter": "第十六章 清熱藥", "chapter_name": "清熱藥", "section": "第四節 清熱涼血藥", "category": "清熱涼血藥", "raw": "紫草（Lithospermi Radix） (Arnebiae Radix）"}, {"id": 159, "zh": "赤芍", "en": "Paeoniae Rubra Radix", "alt_en": "", "chapter": "第十六章 清熱藥", "chapter_name": "清熱藥", "section": "第四節 清熱涼血藥", "category": "清熱涼血藥", "raw": "赤芍（Paeoniae Rubra Radix）"}, {"id": 160, "zh": "地骨皮", "en": "Lycii Radicis Cortex", "alt_en": "", "chapter": "第十六章 清熱藥", "chapter_name": "清熱藥", "section": "第五節 清虛熱藥", "category": "清虛熱藥", "raw": "地骨皮（Lycii Radicis Cortex）"}, {"id": 161, "zh": "青蒿", "en": "Artemisiae Annuae Herba", "alt_en": "", "chapter": "第十六章 清熱藥", "chapter_name": "清熱藥", "section": "第五節 清虛熱藥", "category": "清虛熱藥", "raw": "青蒿（Artemisiae Annuae Herba）"}, {"id": 162, "zh": "蛇床子", "en": "Cnidii Fructus", "alt_en": "", "chapter": "第十七章 外用藥", "chapter_name": "外用藥", "section": "", "category": "外用藥", "raw": "蛇床子（Cnidii Fructus）"}, {"id": 163, "zh": "檳榔", "en": "Arecae Semen", "alt_en": "", "chapter": "第十八章 驅蟲藥", "chapter_name": "驅蟲藥", "section": "", "category": "驅蟲藥", "raw": "檳榔（Arecae Semen）"}];
+
+        // Theme sync (tajen_quiz_theme)
+        const THEME_KEY = 'tajen_quiz_theme';
+        function applyTheme(dark) {
+            document.body.classList.toggle('dark-mode', dark);
+            const ic = document.getElementById('themeIcon');
+            const tx = document.getElementById('themeText');
+            if (ic) ic.textContent = dark ? '☀️' : '🌙';
+            if (tx) tx.textContent = dark ? '淺色' : '深色';
+        }
+        function toggleTheme() {
+            const dark = !document.body.classList.contains('dark-mode');
+            applyTheme(dark);
+            try { localStorage.setItem(THEME_KEY, dark ? 'dark' : 'light'); } catch(e) {}
+        }
+        try {
+            if (localStorage.getItem(THEME_KEY) === 'dark') applyTheme(true);
+        } catch(e) {}
+
+        // Unique categories & chapters
+        const ALL_CATEGORIES = [...new Set(HERBS_DATA.map(h => h.category))];
+        const ALL_CHAPTERS = [...new Set(HERBS_DATA.map(h => h.chapter))];
+
+        // Populate chapter dropdown
+        const chapterSel = document.getElementById('chapterFilter');
+        ALL_CHAPTERS.forEach(ch => {
+            const count = HERBS_DATA.filter(h => h.chapter === ch).length;
+            const opt = document.createElement('option');
+            opt.value = ch;
+            opt.textContent = `${ch}（${count} 味）`;
+            chapterSel.appendChild(opt);
+        });
+
+        // Quiz State (Infinite Shuffle-Bag Deck)
+        let currentMode = 'bilingual'; // 'bilingual' | 'category' | 'mixed' | 'wrong'
+        let biDirection = 'both';      // 'both' | 'zh2en' | 'en2zh'
+        let selectedChapter = 'ALL';
+
+        let pool = [...HERBS_DATA];
+        let bag = [];
+        let roundNum = 1;
+        let roundTotal = HERBS_DATA.length;
+        let roundDone = 0;
+
+        let totalDone = 0;
+        let correctCount = 0;
+        let wrongCount = 0;
+        let streak = 0;
+        let wrongIds = new Set();
+
+        try {
+            const savedWrong = JSON.parse(localStorage.getItem('tcm_herbs_wrong_ids') || '[]');
+            savedWrong.forEach(id => wrongIds.add(id));
+        } catch(e) {}
+
+        let currentQuestion = null;
+        let isAnswered = false;
+        let autoNextTimer = null;
+
+        function saveWrongIds() {
+            try { localStorage.setItem('tcm_herbs_wrong_ids', JSON.stringify([...wrongIds])); } catch(e) {}
+            document.getElementById('wrongDeckCount').textContent = wrongIds.size;
+        }
+
+        function shuffle(arr) {
+            const a = [...arr];
+            for (let i = a.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [a[i], a[j]] = [a[j], a[i]];
+            }
+            return a;
+        }
+
+        function rebuildPool() {
+            if (currentMode === 'wrong') {
+                pool = HERBS_DATA.filter(h => wrongIds.has(h.id));
+                if (selectedChapter !== 'ALL') {
+                    pool = pool.filter(h => h.chapter === selectedChapter);
+                }
+            } else {
+                pool = selectedChapter === 'ALL'
+                    ? [...HERBS_DATA]
+                    : HERBS_DATA.filter(h => h.chapter === selectedChapter);
+            }
+            roundNum = 1;
+            roundDone = 0;
+            roundTotal = pool.length;
+            bag = shuffle(pool);
+        }
+
+        function drawFromBag() {
+            if (pool.length === 0) return null;
+            if (bag.length === 0) {
+                roundNum++;
+                roundDone = 0;
+                bag = shuffle(pool);
+            }
+            const item = bag.pop();
+            roundDone++;
+            return item;
+        }
+
+        function getEnDisplay(item) {
+            return item.alt_en ? `${item.en} (${item.alt_en})` : item.en;
+        }
+
+        // Smart distractor helper for Latin names (prefers same medicinal part suffix like Radix/Fructus/Herba)
+        function getPartSuffix(en) {
+            const parts = en.trim().split(/\s+/);
+            return parts[parts.length - 1].toLowerCase();
+        }
+
+        function buildQuestion() {
+            const item = drawFromBag();
+            if (!item) return null;
+
+            let qType = currentMode;
+            if (qType === 'mixed' || qType === 'wrong') {
+                qType = Math.random() < 0.5 ? 'bilingual' : 'category';
+            }
+
+            if (qType === 'bilingual') {
+                let dir = biDirection;
+                if (dir === 'both') dir = Math.random() < 0.5 ? 'zh2en' : 'en2zh';
+
+                if (dir === 'zh2en') {
+                    const correctText = item.en;
+                    const suffix = getPartSuffix(item.en);
+                    const sameSuffix = HERBS_DATA.filter(h => h.id !== item.id && h.en !== item.en && getPartSuffix(h.en) === suffix);
+                    const others = HERBS_DATA.filter(h => h.id !== item.id && h.en !== item.en && getPartSuffix(h.en) !== suffix);
+
+                    let distractors = shuffle(sameSuffix).slice(0, 3);
+                    if (distractors.length < 3) {
+                        distractors = distractors.concat(shuffle(others).slice(0, 3 - distractors.length));
+                    }
+                    const options = shuffle([correctText, ...distractors.map(d => d.en)]);
+                    return {
+                        item,
+                        qType: 'bilingual',
+                        dir: 'zh2en',
+                        typeLabel: '中英對照',
+                        subLabel: '中 → 英',
+                        prompt: '請選出此中藥對應的英文（拉丁藥用名）：',
+                        stem: item.zh,
+                        options,
+                        correct: correctText
+                    };
+                } else {
+                    const correctText = item.zh;
+                    const suffix = getPartSuffix(item.en);
+                    const sameSuffix = HERBS_DATA.filter(h => h.id !== item.id && h.zh !== item.zh && getPartSuffix(h.en) === suffix);
+                    const others = HERBS_DATA.filter(h => h.id !== item.id && h.zh !== item.zh && getPartSuffix(h.en) !== suffix);
+
+                    let distractors = shuffle(sameSuffix).slice(0, 3);
+                    if (distractors.length < 3) {
+                        distractors = distractors.concat(shuffle(others).slice(0, 3 - distractors.length));
+                    }
+                    const options = shuffle([correctText, ...distractors.map(d => d.zh)]);
+                    return {
+                        item,
+                        qType: 'bilingual',
+                        dir: 'en2zh',
+                        typeLabel: '中英對照',
+                        subLabel: '英 → 中',
+                        prompt: '請選出此英文（拉丁藥用名）對應的中藥名：',
+                        stem: getEnDisplay(item),
+                        options,
+                        correct: correctText
+                    };
+                }
+            } else {
+                // Category mode: Chinese herb -> choose Category
+                const correctCat = item.category;
+                const otherCats = shuffle(ALL_CATEGORIES.filter(c => c !== correctCat)).slice(0, 3);
+                const options = shuffle([correctCat, ...otherCats]);
+                return {
+                    item,
+                    qType: 'category',
+                    dir: 'cat',
+                    typeLabel: '藥材分類',
+                    subLabel: '選出種類',
+                    prompt: '請選出此中藥所屬的功效分類（種類）：',
+                    stem: item.zh,
+                    options,
+                    correct: correctCat
+                };
+            }
+        }
+
+        function renderQuestion() {
+            if (autoNextTimer) { clearTimeout(autoNextTimer); autoNextTimer = null; }
+            isAnswered = false;
+            document.getElementById('feedbackBox').classList.remove('show');
+
+            currentQuestion = buildQuestion();
+            const optBox = document.getElementById('optionsList');
+            optBox.innerHTML = '';
+
+            if (!currentQuestion) {
+                document.getElementById('typeBadge').textContent = '錯題本空空如也';
+                document.getElementById('subBadge').textContent = '全部精通';
+                document.getElementById('qPrompt').textContent = '目前沒有待練習的錯題！';
+                document.getElementById('qStem').textContent = '請切換回「中英對照」或「選出種類」繼續無限刷題 🎉';
+                document.getElementById('roundStat').textContent = '0 題';
+                document.getElementById('progressBar').style.width = '100%';
+                return;
+            }
+
+            totalDone++;
+            document.getElementById('typeBadge').textContent = currentQuestion.typeLabel;
+            document.getElementById('subBadge').textContent = currentQuestion.subLabel;
+            document.getElementById('qCounter').textContent = `總累計第 ${totalDone} 題`;
+            document.getElementById('qPrompt').textContent = currentQuestion.prompt;
+            document.getElementById('qStem').textContent = currentQuestion.stem;
+
+            document.getElementById('roundStat').textContent = `第 ${roundNum} 輪 · ${roundDone}/${roundTotal}`;
+            document.getElementById('progressBar').style.width = `${(roundDone / Math.max(1, roundTotal)) * 100}%`;
+
+            const keys = ['A', 'B', 'C', 'D'];
+            currentQuestion.options.forEach((optText, idx) => {
+                const btn = document.createElement('button');
+                btn.className = 'option-btn';
+                btn.innerHTML = `<span class="opt-key">${keys[idx]}</span><span>${optText}</span>`;
+                btn.onclick = () => selectOption(idx, optText, btn);
+                optBox.appendChild(btn);
+            });
+        }
+
+        function selectOption(idx, chosenText, btnEl) {
+            if (isAnswered || !currentQuestion) return;
+            isAnswered = true;
+
+            const isRight = (chosenText === currentQuestion.correct);
+            const buttons = document.querySelectorAll('#optionsList .option-btn');
+            buttons.forEach((b, i) => {
+                b.disabled = true;
+                if (currentQuestion.options[i] === currentQuestion.correct) {
+                    b.classList.add('correct');
+                } else if (b === btnEl && !isRight) {
+                    b.classList.add('wrong');
+                }
+            });
+
+            if (isRight) {
+                correctCount++;
+                streak++;
+                if (currentMode === 'wrong') {
+                    wrongIds.delete(currentQuestion.item.id);
+                }
+            } else {
+                wrongCount++;
+                streak = 0;
+                wrongIds.add(currentQuestion.item.id);
+            }
+            saveWrongIds();
+
+            document.getElementById('correctCount').textContent = correctCount;
+            document.getElementById('wrongCount').textContent = wrongCount;
+            document.getElementById('streakStat').textContent = `連對 ${streak}`;
+
+            const fbBox = document.getElementById('feedbackBox');
+            const fbTitle = document.getElementById('fbTitle');
+            const fbDetail = document.getElementById('fbDetail');
+
+            fbTitle.textContent = isRight ? '✓ 答對了！' : `✗ 答錯了 — 正確答案：${currentQuestion.correct}`;
+            fbTitle.style.color = isRight ? 'var(--success)' : 'var(--error)';
+
+            const it = currentQuestion.item;
+            const secStr = it.section ? ` · ${it.section}` : '';
+            fbDetail.innerHTML = `<strong>${it.zh}</strong>｜${getEnDisplay(it)}<br>分類：<strong>${it.category}</strong>（${it.chapter}${secStr}）`;
+            fbBox.classList.add('show');
+
+            if (isRight && document.getElementById('autoNextCheck').checked) {
+                autoNextTimer = setTimeout(() => nextQuestion(), 650);
+            }
+        }
+
+        function nextQuestion() {
+            renderQuestion();
+        }
+
+        function setMode(mode, btnEl) {
+            currentMode = mode;
+            document.querySelectorAll('#modeTabs .tab-btn').forEach(b => b.classList.remove('active'));
+            if (btnEl) btnEl.classList.add('active');
+            document.getElementById('dirFilter').style.display = (mode === 'category') ? 'none' : 'inline-block';
+            rebuildPool();
+            renderQuestion();
+        }
+
+        function onDirectionChange() {
+            biDirection = document.getElementById('dirFilter').value;
+            renderQuestion();
+        }
+
+        function onFilterChange() {
+            selectedChapter = document.getElementById('chapterFilter').value;
+            rebuildPool();
+            renderQuestion();
+        }
+
+        function resetStats() {
+            if (!confirm('確定重設答題次數、連對與錯題紀錄嗎？')) return;
+            totalDone = 0;
+            correctCount = 0;
+            wrongCount = 0;
+            streak = 0;
+            wrongIds.clear();
+            saveWrongIds();
+            document.getElementById('correctCount').textContent = '0';
+            document.getElementById('wrongCount').textContent = '0';
+            document.getElementById('streakStat').textContent = '連對 0';
+            rebuildPool();
+            renderQuestion();
+        }
+
+        // Directory Modal
+        function openDirectory() {
+            document.getElementById('dirModal').classList.add('open');
+            renderDirectory();
+        }
+        function closeDirectory() {
+            document.getElementById('dirModal').classList.remove('open');
+        }
+        function renderDirectory() {
+            const kw = (document.getElementById('dirSearch').value || '').trim().toLowerCase();
+            const tbody = document.getElementById('dirTbody');
+            const filtered = HERBS_DATA.filter(h =>
+                !kw ||
+                h.zh.toLowerCase().includes(kw) ||
+                h.en.toLowerCase().includes(kw) ||
+                (h.alt_en && h.alt_en.toLowerCase().includes(kw)) ||
+                h.category.toLowerCase().includes(kw) ||
+                h.chapter.toLowerCase().includes(kw)
+            );
+            tbody.innerHTML = filtered.map(h => `
+                <tr>
+                    <td style="color:var(--ink-muted); font-variant-numeric:tabular-nums;">${h.id}</td>
+                    <td><strong>${h.zh}</strong></td>
+                    <td>${getEnDisplay(h)}</td>
+                    <td><span class="badge">${h.category}</span></td>
+                    <td style="color:var(--ink-secondary); font-size:0.78rem;">${h.chapter}</td>
+                </tr>
+            `).join('');
+        }
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', function(e) {
+            if (document.getElementById('dirModal').classList.contains('open')) {
+                if (e.key === 'Escape') closeDirectory();
+                return;
+            }
+            const map = { '1': 0, '2': 1, '3': 2, '4': 3, 'a': 0, 'b': 1, 'c': 2, 'd': 3, 'A': 0, 'B': 1, 'C': 2, 'D': 3 };
+            if (e.key in map && !isAnswered && currentQuestion) {
+                const idx = map[e.key];
+                const btns = document.querySelectorAll('#optionsList .option-btn');
+                if (btns[idx]) btns[idx].click();
+            } else if ((e.key === 'Enter' || e.key === ' ') && isAnswered) {
+                e.preventDefault();
+                nextQuestion();
+            }
+        });
+
+        // Init from URL query (?mode=bilingual|category|mixed)
+        (function init() {
+            saveWrongIds();
+            const params = new URLSearchParams(window.location.search);
+            const m = params.get('mode');
+            if (m && ['bilingual', 'category', 'mixed', 'wrong'].includes(m)) {
+                const btn = document.querySelector(`#modeTabs .tab-btn[data-mode="${m}"]`);
+                setMode(m, btn);
+            } else {
+                rebuildPool();
+                renderQuestion();
+            }
+        })();
+    </script>
+</body>
+</html>
